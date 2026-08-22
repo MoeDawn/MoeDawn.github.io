@@ -91,11 +91,11 @@
     toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
   };
 
-  /* --- 服务器实时状态（api.mcsrvstat.us，失败降级为"人数未知"） --- */
+  /* --- 服务器实时状态（api.mcstatus.io；mcsrvstat 海外节点连不上 simpfun，勿换回） --- */
   const statusCells = Array.prototype.slice.call(document.querySelectorAll('.status-badge[data-status-for]'));
   const heroBadges = Array.prototype.slice.call(document.querySelectorAll('.badge-status[data-status-host]'));
   const queryStatus = function (host) {
-    return fetch('https://api.mcsrvstat.us/3/' + host)
+    return fetch('https://api.mcstatus.io/v2/status/java/' + encodeURIComponent(host))
       .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
       .then(function (data) {
         return data.online
