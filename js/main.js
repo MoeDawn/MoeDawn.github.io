@@ -25,7 +25,8 @@
   if (tocNav && headings.length) {
     tocNav.innerHTML = headings.map(function (h) {
       const level = h.tagName === 'H2' ? 'toc-l1' : 'toc-l2';
-      return '<a class="' + level + '" href="#' + h.id + '">' + h.textContent + '</a>';
+      const text = h.tagName === 'H2' ? h.textContent : '- ' + h.textContent;
+      return '<a class="' + level + '" href="#' + h.id + '">' + text + '</a>';
     }).join('');
     const links = Array.prototype.slice.call(tocNav.querySelectorAll('a'));
     const setActive = function (id) {
