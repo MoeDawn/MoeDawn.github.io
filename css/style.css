@@ -72,8 +72,10 @@ a:hover { text-decoration: underline; }
 .hero-title {
   font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 900;
   letter-spacing: .04em; text-shadow: 0 0 24px var(--glow);
-  margin-bottom: .5rem;
+  margin-bottom: .5rem; text-wrap: balance;
 }
+.hero-br { display: none; }
+@media (max-width: 560px) { .hero-br { display: block; } }
 .hero-sub { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 2rem; }
 
 /* shields 风格徽章 */
@@ -144,6 +146,15 @@ a:hover { text-decoration: underline; }
   transition: transform .2s, box-shadow .2s;
 }
 #theme-toggle:hover { transform: scale(1.08); box-shadow: 0 0 16px var(--glow); }
+
+/* ============ 访问计数器 ============ */
+#visit-counter {
+  position: fixed; right: 5rem; bottom: 1.2rem; z-index: 89;
+  display: block; line-height: 0;
+  opacity: .85; transition: opacity .2s;
+}
+#visit-counter:hover { opacity: 1; }
+#visit-counter img { max-width: 200px; height: auto; }
 
 /* ============ Toast ============ */
 #toast {
@@ -263,5 +274,7 @@ ol.faq-list li::before {
     box-shadow: 0 8px 30px var(--shadow);
   }
   .toc.collapsed { width: auto; padding: .4rem .6rem; }
+  #visit-counter { right: 5rem; bottom: 1.2rem; }
+  #visit-counter img { max-width: 140px; }
   .intro-fig { grid-template-columns: 1fr; }
 }
