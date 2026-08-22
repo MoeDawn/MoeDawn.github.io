@@ -86,5 +86,56 @@
     toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
   };
 
-  window.MC_MAIN = { showToast: showToast };
+  /* --- 服务器实时状态（api.mcsrvstat.us，失败降级为"人数未知"） --- */
+  const statusCells = Array.prototype.slice.call(document.querySelectorAll('.status-badge[data-status-for]'));
+  const heroBadges = Array.prototype.slice.call(document.querySelectorAll('.badge-status[data-status-host]'));
+  const queryStatus = function (host) {
+    return fetch('https://api.mcsrvstat.us/3/' + host)
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (data) {
+        return data.online
+          ? { online: true, players: data.players && data.players.online }
+          : { offline: true };
+      })
+      .catch(function () { return { unknown: true }; });
+  };
+  const applyToCell = function (el, state) {
+    if (state.online) {
+      el.textContent = (typeof state.players === 'number' ? '在线 · ' + state.players + ' 人' : '在线');
+      el.classList.add('online');
+    } else if (state.offline) {
+      el.textContent = '离线';
+      el.classList.add('offline');
+    } else {
+      el.textContent = '在线 · 人数未知';
+    }
+  };
+  const applyToHeroBadge = function (badge, state) {
+    const text = badge.querySelector('.badge-text');
+    if (state.online) { text.textContent += ' · 在线'; badge.classList.add('is-online'); }
+    else if (state.offline) { text.textContent += ' · 离线'; badge.classList.add('is-offline'); }
+    /* unknown：保持原样 */
+  };
+  const queryAndApplyStatus = function () {
+    const hosts = [];
+    statusCells.forEach(function (el) { if (hosts.indexOf(el.dataset.statusFor) < 0) hosts.push(el.dataset.statusFor); });
+    hosts.forEach(function (host) {
+      queryStatus(host).then(function (state) {
+        statusCells.forEach(function (el) { if (el.dataset.statusFor === host) applyToCell(el, state); });
+        heroBadges.forEach(function (b) { if (b.dataset.statusHost === host) applyToHeroBadge(b, state); });
+      });
+    });
+  };
+  queryAndApplyStatus();
+
+  /* --- 地址一键复制（事件委托，覆盖动态渲染的按钮） --- */
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    navigator.clipboard.writeText(btn.dataset.copy)
+      .then(function () { showToast('已复制：' + btn.dataset.copy); })
+      .catch(function () { showToast('复制失败，请手动复制'); });
+  });
+
+  window.MC_MAIN = { showToast: showToast, queryAndApplyStatus: queryAndApplyStatus };
 })();
