@@ -7,11 +7,12 @@
   <meta name="description" content="休闲向小型 Minecraft 服务器，与同好做伴的清闲之所。1.21.11 生存服与 1.20.1 亡者世界整合包服开放中。">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🏥</text></svg>">
   <script>
-    /* 防主题闪烁：尽早确定主题（存储优先，其次跟随系统） */
+    /* 防主题闪烁：URL ?theme= 参数 > localStorage > 跟随系统 */
     (function () {
       try {
-        var t = localStorage.getItem('theme') ||
-          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        var q = new URLSearchParams(location.search).get('theme');
+        var t = (q === 'light' || q === 'dark') ? q : (localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
         document.documentElement.dataset.theme = t;
       } catch (e) { /* 保持默认 dark */ }
     })();
