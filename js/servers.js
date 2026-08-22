@@ -63,7 +63,17 @@
     }).join('');
   }
 
-  const api = { SERVERS_ACTIVE: SERVERS_ACTIVE, SERVERS_ARCHIVED: SERVERS_ARCHIVED, renderServerTables: renderServerTables };
+  function renderHeroBadges() {
+    const heroBadges = document.querySelector('.hero-badges');
+    if (!heroBadges || !window.MC_SERVERS) return;
+    heroBadges.insertAdjacentHTML('beforeend', SERVERS_ACTIVE.map(function (s) {
+      const label = s.name + (s.version ? ' ' + s.version.replace(/^Java /, '') : '');
+      return '<span class="badge badge-status" data-status-host="' + s.address + '">' +
+        '<span class="dot"></span><span class="badge-text">' + label + '</span></span>';
+    }).join(''));
+  }
+
+  const api = { SERVERS_ACTIVE: SERVERS_ACTIVE, SERVERS_ARCHIVED: SERVERS_ARCHIVED, renderServerTables: renderServerTables, renderHeroBadges: renderHeroBadges };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   else { global.MC_SERVERS = api; }
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -14,9 +14,12 @@
     });
   }
 
-  /* --- 渲染服务器表格 --- */
+  /* --- 渲染服务器表格 + Hero 状态徽章 --- */
   if (window.MC_SERVERS && typeof window.MC_SERVERS.renderServerTables === 'function') {
     window.MC_SERVERS.renderServerTables();
+  }
+  if (window.MC_SERVERS && typeof window.MC_SERVERS.renderHeroBadges === 'function') {
+    window.MC_SERVERS.renderHeroBadges();
   }
 
   /* --- 大纲生成（h2 章节 + h3 小节两级） + 滚动高亮 --- */
