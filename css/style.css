@@ -119,12 +119,11 @@ a:hover { text-decoration: underline; }
 [data-theme="light"] .hero-title { text-shadow: 0 0 28px rgba(236,104,168,.5); }
 [data-theme="light"] .badge-status.is-online .dot { box-shadow: 0 0 8px rgba(52,211,153,.9); }
 
-/* ============ 主布局：大纲（左） + 内容 ============ */
+/* ============ 主布局：内容 + 大纲（右） ============ */
 .layout {
   max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 4rem;
-  display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 3rem;
+  display: grid; grid-template-columns: minmax(0,1fr) 240px; gap: 3rem;
 }
-.toc { order: -1; }
 .section { margin-bottom: 4rem; scroll-margin-top: 1.5rem; }
 .section h2 {
   font-size: 1.6rem; margin-bottom: 1rem; padding-bottom: .5rem;
@@ -257,7 +256,7 @@ ol.faq-list li::before {
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .toc {
-    position: fixed; top: auto; bottom: 5rem; left: 1.2rem; z-index: 80;
+    position: fixed; top: auto; bottom: 5rem; right: 1.2rem; z-index: 80;
     width: min(70vw, 260px); max-height: 55vh;
     background: var(--bg); border: 1px solid var(--card-border);
     border-radius: 12px; padding: .8rem 1rem;
