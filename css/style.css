@@ -1,0 +1,169 @@
+/* ============ 主题变量 ============ */
+:root, :root[data-theme="dark"] {
+  --bg: #0b0e1a;
+  --bg-2: #141a33;
+  --bg-3: #1a1040;
+  --text: #e8eaf6;
+  --text-dim: #8b93b8;
+  --accent: #7ef0c3;
+  --accent-2: #4ea8ff;
+  --card: rgba(255,255,255,.05);
+  --card-border: rgba(255,255,255,.09);
+  --glow: rgba(126,240,195,.45);
+  --shadow: rgba(0,0,0,.5);
+  --btn-text: #0b0e1a;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  /* 粉白紫 4:4:2 —— 白与浅粉构成底色主体，紫作强调 */
+  --bg: #ffffff;
+  --bg-2: #ffeef8;
+  --bg-3: #f3ecff;
+  --text: #3a2a44;
+  --text-dim: #9479a8;
+  --accent: #8b5cf6;
+  --accent-2: #ec4899;
+  --card: rgba(255,255,255,.72);
+  --card-border: rgba(139,92,246,.18);
+  --glow: rgba(139,92,246,.35);
+  --shadow: rgba(180,140,210,.25);
+  --btn-text: #ffffff;
+  color-scheme: light;
+}
+
+/* ============ 基础 ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  transition: background .3s ease, color .3s ease;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  z-index: 100; transition: width .1s linear;
+}
+
+/* ============ Hero ============ */
+.hero {
+  min-height: 92vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(126,240,195,.12), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(78,168,255,.10), transparent 70%),
+    linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
+  position: relative; overflow: hidden;
+}
+.hero-inner { max-width: 720px; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-block; font-size: .8rem; letter-spacing: .35em;
+  color: var(--accent); border: 1px solid var(--card-border);
+  border-radius: 2rem; padding: .25rem 1rem; margin-bottom: 1.25rem;
+  background: var(--card); backdrop-filter: blur(6px);
+}
+.hero-title {
+  font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 900;
+  letter-spacing: .04em; text-shadow: 0 0 24px var(--glow);
+  margin-bottom: .5rem;
+}
+.hero-sub { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 2rem; }
+
+/* shields 风格徽章 */
+.hero-badges { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
+.badge {
+  display: inline-flex; align-items: stretch;
+  font-size: .8rem; line-height: 1.2;
+  border-radius: 4px; overflow: hidden;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  box-shadow: 0 2px 8px var(--shadow);
+  text-decoration: none;
+  transition: transform .15s ease;
+}
+.badge:hover { text-decoration: none; transform: translateY(-1px); }
+.badge-label { padding: .4rem .8rem; background: var(--accent); color: var(--btn-text); font-weight: 700; }
+.badge-join .badge-label { padding-right: 1.4rem; }
+.badge-status {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text-dim); backdrop-filter: blur(6px);
+}
+.badge-status .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-dim); align-self: center; margin: 0 .55rem 0 .7rem;
+  flex: none;
+}
+.badge-status.is-online .dot { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,.8); }
+.badge-status.is-offline .dot { background: #f87171; }
+.badge-status .badge-text { padding: .4rem .8rem .4rem 0; }
+
+.hero-cta {
+  display: inline-block; margin-top: 2.5rem; color: var(--text-dim);
+  font-size: .95rem; transition: color .2s;
+}
+.hero-cta:hover { color: var(--accent); text-decoration: none; }
+
+/* ============ 主布局：内容 + 大纲 ============ */
+.layout {
+  max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 4rem;
+  display: grid; grid-template-columns: minmax(0,1fr) 240px; gap: 3rem;
+}
+.section { margin-bottom: 4rem; scroll-margin-top: 1.5rem; }
+.section h2 {
+  font-size: 1.6rem; margin-bottom: 1rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+.section-note { color: var(--text-dim); font-size: .9rem; margin-bottom: 1rem; }
+
+.intro-fig { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.intro-fig img { border-radius: 12px; border: 1px solid var(--card-border); }
+
+/* ============ 主题切换按钮 ============ */
+#theme-toggle {
+  position: fixed; right: 1.2rem; bottom: 1.2rem;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--card-border); background: var(--card);
+  color: var(--text); font-size: 1.2rem; cursor: pointer;
+  backdrop-filter: blur(8px); z-index: 90;
+  transition: transform .2s, box-shadow .2s;
+}
+#theme-toggle:hover { transform: scale(1.08); box-shadow: 0 0 16px var(--glow); }
+
+/* ============ Toast ============ */
+#toast {
+  position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--accent); color: var(--btn-text);
+  padding: .5rem 1.2rem; border-radius: 8px; font-size: .9rem; font-weight: 600;
+  opacity: 0; pointer-events: none; transition: all .25s ease; z-index: 110;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============ 大纲 ============ */
+.toc {
+  position: sticky; top: 1.5rem; align-self: start;
+  max-height: calc(100vh - 3rem); overflow-y: auto;
+}
+.toc-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .85rem; font-weight: 700; color: var(--text-dim);
+  letter-spacing: .15em; margin-bottom: .75rem;
+}
+#toc-toggle {
+  background: none; border: 1px solid var(--card-border); color: var(--text-dim);
+  border-radius: 6px; width: 24px; height: 24px; cursor: pointer; font-size: .8rem;
+}
+#toc-nav a {
+  display: block; padding: .3rem .75rem; font-size: .85rem;
+  color: var(--text-dim); border-left: 2px solid var(--card-border);
+}
+#toc-nav a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc.collapsed #toc-nav, .toc.collapsed .toc-head span { display: none; }
+.toc.collapsed #toc-toggle { transform: rotate(180deg); }
+
+/* T6-APPEND-POINT */
