@@ -19,12 +19,13 @@
     window.MC_SERVERS.renderServerTables();
   }
 
-  /* --- 大纲生成 + 滚动高亮 --- */
+  /* --- 大纲生成（h2 章节 + h3 小节两级） + 滚动高亮 --- */
   const tocNav = document.getElementById('toc-nav');
-  const headings = Array.prototype.slice.call(document.querySelectorAll('#content h2'));
+  const headings = Array.prototype.slice.call(document.querySelectorAll('#content h2, #content h3.faq-sub'));
   if (tocNav && headings.length) {
     tocNav.innerHTML = headings.map(function (h) {
-      return '<a href="#' + h.id + '">' + h.textContent + '</a>';
+      const level = h.tagName === 'H2' ? 'toc-l1' : 'toc-l2';
+      return '<a class="' + level + '" href="#' + h.id + '">' + h.textContent + '</a>';
     }).join('');
     const links = Array.prototype.slice.call(tocNav.querySelectorAll('a'));
     const setActive = function (id) {

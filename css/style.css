@@ -163,6 +163,7 @@ a:hover { text-decoration: underline; }
   color: var(--text-dim); border-left: 2px solid var(--card-border);
 }
 #toc-nav a.active { color: var(--accent); border-left-color: var(--accent); }
+#toc-nav a.toc-l2 { padding-left: 1.5rem; font-size: .8rem; opacity: .85; }
 .toc.collapsed #toc-nav, .toc.collapsed .toc-head span { display: none; }
 .toc.collapsed #toc-toggle { transform: rotate(180deg); }
 
