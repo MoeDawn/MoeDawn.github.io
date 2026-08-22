@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>脑溢血急救中心 · Minecraft 服务器</title>
+  <meta name="description" content="休闲向小型 Minecraft 服务器，与同好做伴的清闲之所。1.21.11 生存服与 1.20.1 亡者世界整合包服开放中。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🏥</text></svg>">
+  <script>
+    /* 防主题闪烁：尽早确定主题（存储优先，其次跟随系统） */
+    (function () {
+      try {
+        var t = localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = t;
+      } catch (e) { /* 保持默认 dark */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="progress-bar" aria-hidden="true"></div>
 
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">MINECRAFT 服务器</p>
+      <h1 class="hero-title">脑溢血急救中心</h1>
+      <p class="hero-sub">休闲 · 小型 · 无内卷 —— 为想要一份清闲、又有同好做伴的你而建</p>
+      <div class="hero-badges">
+        <a class="badge badge-join" href="https://qm.qq.com/cgi-bin/qm/qr?k=wENtHmJR4U8TpIZyBSTScr9Si5VAH9B1&jump_from=webapi&authKey=2a2V6Oz+lX7qJ4D9bjdYGK9Xbp+CX5M3bR94IA6X24y4cGRwp8X1UyFaMTnVmm7G" target="_blank" rel="noopener">
+          <span class="badge-label">加入 QQ 群</span>
+        </a>
+        <span class="badge badge-status" data-status-host="ssjj2.top"><span class="dot"></span><span class="badge-text">1.21.11 生存服</span></span>
+        <span class="badge badge-status" data-status-host="ssjj3.top"><span class="dot"></span><span class="badge-text">亡者世界 1.20.1</span></span>
+      </div>
+      <a class="hero-cta" href="#servers">查看服务器 ↓</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main id="content">
+
+      <section class="section" id="intro" aria-labelledby="intro-h">
+        <h2 id="intro-h">服务器介绍</h2>
+        <p>本服务器非常适合喜欢小型服务器且倾向于休闲向的人。有别于那些大型多人服务器，如果你需要一份清闲之处，同时又想要有同好做伴，那么这里会非常适合你。当前开放的服务器均无正版验证，任何人都可以轻松畅玩。</p>
+        <figure class="intro-fig">
+          <img src="images/intro-1.jpg" alt="服务器建筑截图" loading="lazy">
+          <img src="images/intro-3.jpg" alt="服务器风景截图" loading="lazy">
+        </figure>
+        <p>服务器非常轻量、管制宽松：没有服规、没有地位高低之分，正常情况下不会有任何 OP 在线。但这不意味着无政府 —— 严重影响服内环境的恶劣行为将直接顶格处理。作为自由的服务器，底线只为维护最基本的风气。</p>
+        <p>清闲、人少、协同互进、玩家通力合作 —— 如果这种服务器对你胃口，千万不要错过。</p>
+      </section>
+
+      <section class="section" id="servers" aria-labelledby="servers-h">
+        <h2 id="servers-h">开放中的服务器</h2>
+        <p class="section-note">使用对应版本进入；整合包在 QQ 群文件 → 游戏资源 内下载。</p>
+        <div class="table-wrap">
+          <table class="server-table" id="server-table">
+            <thead>
+              <tr><th>名称</th><th>版本</th><th>类型</th><th>地址</th><th>整合包</th><th>状态</th></tr>
+            </thead>
+            <tbody id="server-rows"><!-- js/servers.js 渲染 --></tbody>
+          </table>
+        </div>
+        <p class="section-note">白名单：进服前在群内召唤任意管理员上报游戏 ID，或按进服弹窗提示完成验证绑定。</p>
+      </section>
+
+      <section class="section" id="archive" aria-labelledby="archive-h">
+        <h2 id="archive-h">历史服档案馆</h2>
+        <p class="section-note">一路走来的坑，感谢每一位同行的伙伴。</p>
+        <details class="archive-box">
+          <summary>展开 10 个已关闭的服务器</summary>
+          <div class="table-wrap">
+            <table class="server-table archive-table">
+              <thead>
+                <tr><th>名称</th><th>版本</th><th>备注</th><th>地址（历史）</th></tr>
+              </thead>
+              <tbody id="archive-rows"><!-- js/servers.js 渲染 --></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <!-- FAQ-TASK4-INSERT-POINT -->
+
+      <section class="section" id="join" aria-labelledby="join-h">
+        <h2 id="join-h">现在，来吧</h2>
+        <p>加群 → 群文件拿整合包（亡者世界服需要）→ 拉上朋友进服。我们在这里等你。</p>
+        <div class="hero-badges">
+          <a class="badge badge-join" href="https://qm.qq.com/cgi-bin/qm/qr?k=wENtHmJR4U8TpIZyBSTScr9Si5VAH9B1&jump_from=webapi&authKey=2a2V6Oz+lX7qJ4D9bjdYGK9Xbp+CX5M3bR94IA6X24y4cGRwp8X1UyFaMTnVmm7G" target="_blank" rel="noopener"><span class="badge-label">加入 QQ 群</span></a>
+        </div>
+      </section>
+    </main>
+
+    <aside class="toc" id="toc">
+      <div class="toc-head">
+        <span>目录</span>
+        <button id="toc-toggle" aria-label="收起或展开目录" title="收起/展开目录">«</button>
+      </div>
+      <nav id="toc-nav" aria-label="页面目录"><!-- JS 生成 --></nav>
+    </aside>
+  </div>
+
+  <footer class="footer">
+    <p>脑溢血急救中心 · 一个清闲的 Minecraft 小服务器</p>
+    <div class="footer-links">
+      <a href="https://qm.qq.com/cgi-bin/qm/qr?k=wENtHmJR4U8TpIZyBSTScr9Si5VAH9B1&jump_from=webapi&authKey=2a2V6Oz+lX7qJ4D9bjdYGK9Xbp+CX5M3bR94IA6X24y4cGRwp8X1UyFaMTnVmm7G" target="_blank" rel="noopener">加群</a>
+      <a href="#top">回顶部</a>
+      <a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" rel="noopener" class="egg-author">关于作者</a>
+      <a href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" rel="noopener" class="egg-btn" title="千万别点">.</a>
+    </div>
+    <p class="footer-fine">© 2026 脑溢血急救中心 · 本页由 GitHub Pages 托管</p>
+  </footer>
+
+  <button id="theme-toggle" aria-label="切换明暗主题" title="切换明暗主题">🌙</button>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/servers.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
