@@ -233,17 +233,6 @@ a:hover { text-decoration: underline; }
 .status-badge.online { color: #34d399; font-weight: 600; }
 .status-badge.offline { color: #f87171; font-weight: 600; }
 
-/* MOTD 展示行（mcstatus.io 的 MC 彩色 html） */
-.motd-row td {
-  padding: 0 1rem .7rem; border-bottom: 1px solid var(--card-border);
-  background: rgba(127,127,127,.04);
-}
-.server-row + .motd-row td { border-top: none; }
-.server-motd {
-  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-  font-size: .8rem; white-space: pre-line; display: block;
-}
-
 .archive-box {
   border: 1px solid var(--card-border); border-radius: 12px;
   background: var(--card); padding: 0 1.2rem;

@@ -102,13 +102,7 @@
       .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
       .then(function (data) {
         return data.online
-          ? {
-              online: true,
-              players: data.players && data.players.online,
-              host: host,
-              motdHtml: data.motd && data.motd.html,
-              motdClean: data.motd && data.motd.clean
-            }
+          ? { online: true, players: data.players && data.players.online }
           : { offline: true };
       })
       .catch(function () { return { unknown: true }; });
@@ -122,15 +116,6 @@
       el.classList.add('offline');
     } else {
       el.textContent = '在线 · 人数未知';
-    }
-    /* MOTD：mcstatus.io 返回带 MC 色彩的 html，放进行下方的展示区 */
-    if (state.motdHtml) {
-      const motdEl = document.querySelector('.server-motd[data-motd-for="' + state.host + '"]');
-      if (motdEl) motdEl.innerHTML = state.motdHtml;
-    }
-    if (state.motdClean) {
-      const badge = heroBadges.filter(function (b) { return b.dataset.statusHost === state.host; })[0];
-      if (badge) badge.title = state.motdClean.replace(/\n/g, ' ');
     }
   };
   const applyToHeroBadge = function (badge, state) {
