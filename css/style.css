@@ -233,6 +233,17 @@ a:hover { text-decoration: underline; }
 .status-badge.online { color: #34d399; font-weight: 600; }
 .status-badge.offline { color: #f87171; font-weight: 600; }
 
+/* MOTD 展示行（mcstatus.io 的 MC 彩色 html） */
+.motd-row td {
+  padding: 0 1rem .7rem; border-bottom: 1px solid var(--card-border);
+  background: rgba(127,127,127,.04);
+}
+.server-row + .motd-row td { border-top: none; }
+.server-motd {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: .8rem; white-space: pre-line; display: block;
+}
+
 .archive-box {
   border: 1px solid var(--card-border); border-radius: 12px;
   background: var(--card); padding: 0 1.2rem;
@@ -272,6 +283,44 @@ ol.faq-list li::before {
 .footer-links a:hover { color: var(--accent); text-decoration: none; }
 .footer-fine { font-size: .78rem; opacity: .6; }
 .egg-btn { font-weight: 900; opacity: .35; }
+
+/* ============ 愚人节模式（每年 4.1 由 JS 自动挂 class） ============ */
+html.april-fools .hero-title { transform: rotate(-3deg) skewX(-8deg); letter-spacing: .15em; }
+html.april-fools .hero-sub { transform: rotate(1.5deg); }
+html.april-fools .section h2 { transform: rotate(-1deg); }
+html.april-fools .server-table { transform: rotate(.6deg); }
+html.april-fools .faq-card:nth-child(odd) { transform: rotate(-1.2deg); }
+html.april-fools .faq-card:nth-child(even) { transform: rotate(1deg); }
+html.april-fools .toc { transform: rotate(2deg); }
+html.april-fools body { animation: april-hue 12s ease-in-out infinite alternate; }
+@keyframes april-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(40deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.april-fools body { animation: none; }
+}
+
+/* ============ 404 页 ============ */
+.body-404 {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(126,240,195,.12), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(78,168,255,.10), transparent 70%),
+    linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
+}
+.fools-404 { max-width: 640px; padding: 2rem 1.5rem; }
+.fools-code {
+  font-size: clamp(5rem, 20vw, 9rem); font-weight: 900; line-height: 1;
+  color: var(--accent); text-shadow: 0 0 36px var(--glow);
+  animation: fools-swing 3s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@keyframes fools-swing { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+.fools-404 h1 { font-size: 1.6rem; margin: 1rem 0 .5rem; }
+.fools-sub { color: var(--text-dim); margin-bottom: 2rem; }
+@media (prefers-reduced-motion: reduce) { .fools-code { animation: none; } }
 
 /* ============ 动效 ============ */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }

@@ -2,6 +2,9 @@
 (function () {
   'use strict';
 
+  /* 彩蛋：控制台整人警告 */
+  console.log('%c当你看到这句话的时候,后台已读取并封禁你的社交账号与游戏id和常用IP', 'color:#f87171;font-size:14px;font-weight:bold');
+
   /* --- 主题（初始主题已由 head 内联脚本确定，这里只管切换） --- */
   const root = document.documentElement;
   const toggleBtn = document.getElementById('theme-toggle');
@@ -99,7 +102,13 @@
       .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
       .then(function (data) {
         return data.online
-          ? { online: true, players: data.players && data.players.online }
+          ? {
+              online: true,
+              players: data.players && data.players.online,
+              host: host,
+              motdHtml: data.motd && data.motd.html,
+              motdClean: data.motd && data.motd.clean
+            }
           : { offline: true };
       })
       .catch(function () { return { unknown: true }; });
@@ -113,6 +122,15 @@
       el.classList.add('offline');
     } else {
       el.textContent = '在线 · 人数未知';
+    }
+    /* MOTD：mcstatus.io 返回带 MC 色彩的 html，放进行下方的展示区 */
+    if (state.motdHtml) {
+      const motdEl = document.querySelector('.server-motd[data-motd-for="' + state.host + '"]');
+      if (motdEl) motdEl.innerHTML = state.motdHtml;
+    }
+    if (state.motdClean) {
+      const badge = heroBadges.filter(function (b) { return b.dataset.statusHost === state.host; })[0];
+      if (badge) badge.title = state.motdClean.replace(/\n/g, ' ');
     }
   };
   const applyToHeroBadge = function (badge, state) {
@@ -143,4 +161,12 @@
   });
 
   window.MC_MAIN = { showToast: showToast, queryAndApplyStatus: queryAndApplyStatus };
+
+  /* --- 愚人节模式：每年 4 月 1 日自动触发页面整蛊 --- */
+  (function () {
+    const now = new Date();
+    if (now.getMonth() === 3 && now.getDate() === 1) {
+      document.documentElement.classList.add('april-fools');
+    }
+  })();
 })();

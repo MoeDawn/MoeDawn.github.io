@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 · 页面脑溢血了</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = t;
+      } catch (e) { /* 保持默认 dark */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="body-404">
+  <main class="fools-404">
+    <p class="fools-code">404</p>
+    <h1>这个页面脑溢血了</h1>
+    <p class="fools-sub">急救无效，宣告不治。医生说你可能是走错了病房</p>
+    <div class="hero-badges">
+      <a class="badge badge-join" href="/"><span class="badge-label">返回急救中心</span></a>
+      <a class="badge badge-join" href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" rel="noopener"><span class="badge-label">为它默哀</span></a>
+    </div>
+  </main>
+</body>
+</html>

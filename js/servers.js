@@ -42,7 +42,7 @@
     if (!activeTbody || !archiveTbody) return;
 
     activeTbody.innerHTML = SERVERS_ACTIVE.map(function (s) {
-      return '<tr>' +
+      return '<tr class="server-row">' +
         '<td><b>' + s.name + '</b></td>' +
         '<td>' + s.version + '</td>' +
         '<td>' + s.type + '</td>' +
@@ -50,7 +50,8 @@
         '<button class="copy-btn" data-copy="' + s.address + '" title="复制地址">⧉</button></td>' +
         '<td>' + s.modpack + '</td>' +
         '<td><span class="status-badge" data-status-for="' + s.address + '">查询中…</span></td>' +
-        '</tr>';
+        '</tr>' +
+        '<tr class="motd-row"><td colspan="6"><span class="server-motd" data-motd-for="' + s.address + '"></span></td></tr>';
     }).join('');
 
     archiveTbody.innerHTML = SERVERS_ARCHIVED.map(function (s) {
