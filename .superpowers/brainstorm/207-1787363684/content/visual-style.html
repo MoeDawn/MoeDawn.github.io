@@ -1,0 +1,125 @@
+<style>
+  .style-demo {
+    height: 230px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    font-family: system-ui, sans-serif;
+  }
+  /* A: 暗夜霓虹 */
+  .demo-a { background: linear-gradient(160deg, #0b0e1a 0%, #141a33 60%, #1a1040 100%); }
+  .demo-a .hero { padding: 18px 16px; }
+  .demo-a .tag { display:inline-block; font-size:9px; color:#7ef0c3; border:1px solid rgba(126,240,195,.4); border-radius:20px; padding:2px 8px; background:rgba(126,240,195,.08); letter-spacing:2px;}
+  .demo-a h1 { color:#fff; font-size:22px; margin:8px 0 4px; font-weight:800; text-shadow:0 0 18px rgba(126,240,195,.45);}
+  .demo-a p { color:#8b93b8; font-size:10px; margin:0 0 10px;}
+  .demo-a .btn { display:inline-block; font-size:10px; color:#0b0e1a; background:linear-gradient(90deg,#7ef0c3,#4ea8ff); padding:5px 14px; border-radius:6px; font-weight:700;}
+  .demo-a .grid { display:flex; gap:6px; padding:0 16px;}
+  .demo-a .cell { flex:1; height:44px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:8px; backdrop-filter:blur(4px);}
+  /* B: 像素方块 */
+  .demo-b { background:#8bc34a; background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px); background-size:12px 12px;}
+  .demo-b .hero { padding:18px 16px; text-align:center;}
+  .demo-b h1 { color:#fff; font-size:20px; margin:6px 0 8px; font-weight:900; text-shadow:3px 3px 0 #33691e, -1px -1px 0 #33691e;}
+  .demo-b .btn { display:inline-block; font-size:10px; color:#fff; background:#795548; border:3px solid #5d4037; box-shadow:inset -3px -3px 0 rgba(0,0,0,.25), inset 3px 3px 0 rgba(255,255,255,.2); padding:6px 16px; font-weight:800;}
+  .demo-b .blocks { display:flex; gap:4px; padding:12px 16px 0;}
+  .demo-b .blk { width:22px; height:22px; border:2px solid rgba(0,0,0,.35); }
+  /* C: 极简杂志 */
+  .demo-c { background:#faf7f2; }
+  .demo-c .hero { padding:20px 18px;}
+  .demo-c .rule { width:36px; height:2px; background:#1a1a1a; margin-bottom:8px;}
+  .demo-c h1 { color:#111; font-size:21px; margin:0 0 6px; font-weight:300; font-family:Georgia,serif; font-style:italic;}
+  .demo-c p { color:#666; font-size:10px; margin:0 0 12px; line-height:1.6;}
+  .demo-c .row { display:flex; gap:10px; border-top:1px solid #e5e0d8; padding-top:8px;}
+  .demo-c .col { font-size:9px; color:#999;}
+  .demo-c .col b {display:block; color:#111; font-size:10px; margin-bottom:2px; font-weight:600;}
+  /* D: 暗色+像素混合 */
+  .demo-d { background: radial-gradient(ellipse at 30% 0%, #1e3a2f 0%, #0d120e 70%); }
+  .demo-d .hero { padding:18px 16px;}
+  .demo-d .tag { font-size:9px; color:#9ccc65; border:2px solid #9ccc65; padding:2px 8px; box-shadow:3px 3px 0 rgba(156,204,101,.3); background:rgba(0,0,0,.3);}
+  .demo-d h1 { color:#f4ffe0; font-size:20px; margin:8px 0 4px; font-weight:900; text-shadow:2px 2px 0 #33691e;}
+  .demo-d p { color:#a3b79a; font-size:10px; margin:0 0 10px;}
+  .demo-d .btn { display:inline-block; font-size:10px; color:#0d120e; background:#9ccc65; border:2px solid #689f38; padding:5px 12px; font-weight:800; box-shadow:3px 3px 0 #689f38;}
+</style>
+
+<h2>视觉风格方向</h2>
+<p class="subtitle">这是整个站点最核心的设计决策 — 每个卡片是一个缩小版的首页英雄区示意。点击选择最对你胃口的（可在终端补充想法）</p>
+
+<div class="cards">
+  <div class="card" data-choice="a-dark-neon" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="style-demo demo-a">
+        <div class="hero">
+          <span class="tag">MINECRAFT 服务器</span>
+          <h1>脑溢血急救中心</h1>
+          <p>休闲 · 小型 · 无内卷的清闲之所</p>
+          <span class="btn">加入服务器 →</span>
+        </div>
+        <div class="grid"><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · 暗夜霓虹</h3>
+      <p>深色底 + 霓虹渐变光晕 + 玻璃拟态卡片。最接近 Awwwards 获奖游戏站点的气质，高级感强</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b-pixel-mc" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="style-demo demo-b">
+        <div class="hero">
+          <h1>脑溢血急救中心</h1>
+          <span class="btn">进入服务器</span>
+        </div>
+        <div class="blocks">
+          <div class="blk" style="background:#795548"></div>
+          <div class="blk" style="background:#8d6e63"></div>
+          <div class="blk" style="background:#a1887f"></div>
+          <div class="blk" style="background:#558b2f"></div>
+          <div class="blk" style="background:#689f38"></div>
+          <div class="blk" style="background:#7cb342"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · 像素方块</h3>
+      <p>纯正 Minecraft 视觉语言：草绿底、硬阴影、方块边框、像素字体。一眼就知道是 MC 服务器，亲切有趣</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c-editorial" onclick="toggleSelect(this)">
+    < <div class="card-image">
+      <div class="style-demo demo-c">
+        <div class="hero">
+          <div class="rule"></div>
+          <h1>脑溢血急救中心</h1>
+          <p>一座远离喧嚣的小镇，为热爱创造的旅人而建。这里没有排名，没有竞争，只有伙伴。</p>
+          <div class="row">
+            <div class="col"><b>生存服</b>1.21.11</div>
+            <div class="col"><b>机械症</b>1.20.1</div>
+            <div class="col"><b>状态</b>开放中</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C · 极简杂志</h3>
+      <p>纸感浅色底 + 衬线标题 + 细线分隔。像一本安静的小镇刊物，反差感强、阅读体验最好，但"游戏感"最弱</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="d-dark-pixel" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="style-demo demo-d">
+        <div class="hero">
+          <span class="tag">MINECRAFT</span>
+          <h1>脑溢血急救中心</h1>
+          <p>休闲 · 小型 · 与同好做伴</p>
+          <span class="btn">加入服务器</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>D · 暗黑×像素混合</h3>
+      <p>深色高级底 + 像素描边/硬阴影点缀。A 的质感 + B 的游戏身份认同，兼顾 Awwwards 气质与 MC 辨识度</p>
+    </div>
+  </div>
+</div>

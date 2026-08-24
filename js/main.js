@@ -3,7 +3,7 @@
   'use strict';
 
   /* 彩蛋：控制台整人警告 */
-  console.log('%c当你看到这句话的时候,后台已读取并封禁你的社交账号与游戏id和常用IP', 'color:#f87171;font-size:14px;font-weight:bold');
+  console.log('%c虽然不知道你想干什么,但是当你看到这句话的时候,后台已读取并封禁你在群内的社交账号与游戏id和常用IP', 'color:#f87171;font-size:14px;font-weight:bold');
 
   /* --- 主题（初始主题已由 head 内联脚本确定，这里只管切换） --- */
   const root = document.documentElement;
