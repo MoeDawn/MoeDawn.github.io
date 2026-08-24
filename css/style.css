@@ -44,6 +44,20 @@ body {
 img { max-width: 100%; display: block; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+/* 正文内链接：仅靠强调色 + 右上角上标箭头区分外链，无下划线 */
+.faq-card a, .section > p a {
+  font-weight: 600;
+}
+.faq-card a[target="_blank"]::after, .section > p a[target="_blank"]::after {
+  content: "↗";
+  font-size: .6em;
+  font-weight: 400;
+  opacity: .75;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: .1em;
+}
+.no-ext-icon::after { content: none !important; }
 
 #progress-bar {
   position: fixed; top: 0; left: 0; height: 3px; width: 0;
@@ -62,7 +76,7 @@ a:hover { text-decoration: underline; }
     linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
   position: relative; overflow: hidden;
 }
-.hero-inner { max-width: 720px; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+.hero-inner { max-width: 840px; padding: 2rem 1.5rem; position: relative; z-index: 1; }
 .hero-eyebrow {
   display: inline-block; font-size: .8rem; letter-spacing: .35em;
   color: var(--accent); border: 1px solid var(--card-border);
@@ -75,6 +89,10 @@ a:hover { text-decoration: underline; }
   margin-bottom: .5rem; text-wrap: balance;
 }
 .hero-br { display: none; }
+/* >560px 强制一行：窗口再窄也是缩小字号而不是折行 */
+@media (min-width: 561px) {
+  .hero-title { white-space: nowrap; }
+}
 @media (max-width: 560px) { .hero-br { display: block; } }
 .hero-sub { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 2rem; }
 
@@ -147,13 +165,12 @@ a:hover { text-decoration: underline; }
 }
 #theme-toggle:hover { transform: scale(1.08); box-shadow: 0 0 16px var(--glow); }
 
-/* ============ 访问计数器（目录下方） ============ */
+/* ============ 访问计数器（目录下方，纯展示不可点击） ============ */
 #visit-counter {
   display: block; line-height: 0;
   margin-top: 1.5rem;
-  opacity: .85; transition: opacity .2s;
+  opacity: .85;
 }
-#visit-counter:hover { opacity: 1; }
 #visit-counter img { max-width: 200px; height: auto; }
 .toc.collapsed #visit-counter { display: none; }
 
