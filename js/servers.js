@@ -1,6 +1,6 @@
 /* 服务器数据 —— 以后更新服务器状态只改本文件。
    开放服字段: name/version/type/address/modpack/noauth
-   历史服字段: name/version/type/address/closed/note */
+   历史服字段: name/version/type/address/closed/note/archived */
 (function (global) {
   'use strict';
 
@@ -25,17 +25,19 @@
   ];
 
   const SERVERS_ARCHIVED = [
-    { name: '亡者世界', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'ssjj3.top', closed: true, note: '已通关流程顺利结档' },
-    { name: '1.21 纯生存服', version: 'Java/基岩 1.21', type: '生存', address: 'ssjj2.top', closed: true, note: '双端互通' },
-    { name: '1.21 纯生存创造服', version: 'Java 1.21', type: '创造', address: 'cz.ssjj2.top', closed: true, note: '' },
-    { name: '1.21.11 创造服', version: 'Java 1.21.11', type: '创造', address: 'ssjj2.top', closed: true, note: '与生存服共用入口' },
-    { name: '女仆生存服', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '养老生活2 整合包' },
-    { name: '女仆生存创造服', version: 'Java 1.20.1', type: '创造', address: 'xxcz.ssjj2.top', closed: true, note: '' },
-    { name: '死亡突围', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '整合包位于群文件' },
-    { name: '女仆生存 vanilla+', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'md.ssjj2.top', closed: true, note: '养老生活 vanilla+ 整合包' },
-    { name: '脆骨症黯光', version: 'Java 1.19.2', type: '生存 · 整合包', address: 'cs.ssjj2.top', closed: true, note: '"没有血肉的胸部" · 有正版验证' },
-    { name: '重度机械症航空学', version: 'Java 1.21.1', type: '生存 · 整合包', address: 'n.ssjj3.top', closed: true, note: 'Mechanomania-1.1.7.3 · 有正版验证' },
-    { name: '2025 愚人节版本', version: '活动限定', type: '活动', address: 'yr.ssjj2.top', closed: true, note: '愚人节限定' }
+    { name: '亡者世界', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'ssjj3.top', closed: true, note: '已通关主线流程顺利结档', archived: '2026.9' },
+    { name: '1.21 纯生存服', version: 'Java/基岩 1.21', type: '生存', address: 'ssjj2.top', closed: true, note: '双端互通', archived: '2025' },
+    { name: '1.21 纯生存创造服', version: 'Java 1.21', type: '创造', address: 'cz.ssjj2.top', closed: true, note: '用于研究建筑的创造服', archived: '2025' },
+    { name: '1.21.11 生存&创造服', version: 'Java 1.21.11', type: '创造', address: 'ssjj2.top', closed: true, note: '与生存服共用入口', archived: '2025' },
+    { name: '轻松愉快的女仆生存服', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '枪械,更多尸潮,血腥,感染;未能建造更大的炮艇草率结档', archived: '2025' },
+    { name: '女仆生存创造服', version: 'Java 1.20.1', type: '创造', address: 'xxcz.ssjj2.top', closed: true, note: '默认创造模式;用于构思建筑或者机械动力机器', archived: '2025' },
+    { name: '死亡突围', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '死亡突围整合包', archived: '2025' },
+    { name: '女仆生存 vanilla+', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'md.ssjj2.top', closed: true, note: '休闲,女仆,种田,超多农夫乐事附属与世界结构,和女仆一起休闲种田养老', archived: '2025' },
+    { name: '脆骨症黯光', version: 'Java 1.19.2', type: '生存 · 整合包', address: 'cs.ssjj2.top', closed: true, note: '"没有血肉的胸部" ', archived: '2025' },
+    { name: '重度机械症航空学', version: 'Java 1.21.1', type: '生存 · 整合包', address: 'n.ssjj3.top', closed: true, note: '重度机械症整合包', archived: '2025' },
+    { name: '2025 愚人节版本', version: '活动限定', type: '活动', address: 'yr.ssjj2.top', closed: true, note: '愚人节限定', archived: '2025.4' },
+    { name: '迷你世界', version: '1.20.1', type: '生存 · 整合包', address: 'ssjj2.top', closed: true, note: '神话,冒险,女仆;真轻松愉快的休闲养老生活', archived: '2024.5' },
+    { name: '轻松愉快的休闲养老生活', version: '1.20.1', type: '生存 · 整合包', address: 'ssjj2.top', closed: true, note: '尸潮,感染,恐怖,挑战;最后蘑菇岛发展成功通关', archived: '2024.9' }
   ];
 
   function renderServerTables() {
@@ -63,6 +65,7 @@
         '<td><b>' + s.name + '</b></td>' +
         '<td>' + s.version + '</td>' +
         '<td>' + (s.note || '—') + '</td>' +
+        '<td>' + (s.archived || '—') + '</td>' +
         '<td><code>' + s.address + '</code></td>' +
         '</tr>';
     }).join('');

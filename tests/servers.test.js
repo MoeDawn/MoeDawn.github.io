@@ -15,9 +15,10 @@ test('zomboid server is excluded from status polling', () => {
 });
 
 test('archived servers include retired 亡者世界, all closed', () => {
-  assert.equal(SERVERS_ARCHIVED.length, 11);
+  assert.equal(SERVERS_ARCHIVED.length, 13);
   assert.ok(SERVERS_ARCHIVED.every(s => s.closed === true));
   assert.ok(SERVERS_ARCHIVED.some(s => s.name === '亡者世界'));
+  assert.ok(SERVERS_ARCHIVED.every(s => s.archived, 'every archived entry has a date'));
 });
 
 test('every server has name/version/address', () => {

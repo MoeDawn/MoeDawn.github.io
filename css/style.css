@@ -144,6 +144,7 @@ a:hover { text-decoration: underline; }
   max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 4rem;
   display: grid; grid-template-columns: minmax(0,1fr) 240px; gap: 3rem;
 }
+.layout > * { min-width: 0; }
 .section { margin-bottom: 4rem; scroll-margin-top: 1.5rem; }
 .section h2 {
   font-size: 1.6rem; margin-bottom: 1rem; padding-bottom: .5rem;
@@ -212,7 +213,8 @@ a:hover { text-decoration: underline; }
   border: 1px solid var(--card-border);
   background: var(--card); backdrop-filter: blur(8px);
 }
-.server-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+/* 保持列完整可读：窄屏由 .table-wrap 横向滚动，而不是把每列压成两字宽 */
+.server-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: .92rem; }
 .server-table th {
   text-align: left; padding: .7rem 1rem; font-size: .78rem;
   letter-spacing: .08em; color: var(--text-dim);
@@ -321,7 +323,8 @@ html.april-fools body { animation: april-hue 12s ease-in-out infinite alternate;
 
 /* ============ 响应式 ============ */
 @media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; gap: 1.5rem; }
+  /* minmax(0,1fr) 而非 1fr：grid item 默认 min-width:auto 会被宽表格撑破视口 */
+  .layout { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
   .toc {
     position: fixed; top: auto; bottom: 5rem; right: 1.2rem; z-index: 80;
     width: min(70vw, 260px); max-height: 55vh;

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人格设定管理面板</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; background: #0d1117; color: #e6edf3;
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding-bottom: 4rem;
+    }
+
+    /* ===== 顶栏 ===== */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2rem; border-bottom: 1px solid #21262d;
+      background: #010409; position: sticky; top: 0; z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; letter-spacing: .05em; }
+    .brand .logo {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: linear-gradient(135deg, #58a6ff, #1f6feb);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 900; color: #fff;
+    }
+    .account { display: flex; align-items: center; gap: .55rem; font-size: .95rem; color: #8b949e; }
+    .account b {
+      color: #ff4d4f; font-weight: 800; letter-spacing: .03em;
+      text-shadow: 0 0 10px rgba(255,77,79,.65), 0 0 26px rgba(255,77,79,.35);
+    }
+    .account .level {
+      font-size: .68rem; color: #58a6ff; border: 1px solid rgba(88,166,255,.4);
+      border-radius: 1rem; padding: .05rem .55rem; background: rgba(88,166,255,.08);
+    }
+    /* 高权限账号区：呼吸红光 + 边框 */
+    .account-priv {
+      display: inline-flex; align-items: center; gap: .55rem;
+      padding: .35rem .9rem; border-radius: .8rem;
+      border: 1px solid rgba(255,77,79,.45);
+      background: rgba(255,77,79,.07);
+      animation: priv-glow 2.4s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    .topbar { flex-wrap: wrap; }
+    @media (max-width: 640px) {
+      .topbar { padding: .7rem 1rem; row-gap: .55rem; }
+      /* 手机：品牌+退出第一行，账号红牌第二行独占右对齐 */
+      .topbar .brand { flex: 1 1 auto; }
+      .topbar .account-priv { order: 3; width: 100%; justify-content: center; }
+      .account { font-size: .85rem; }
+    }
+    @keyframes priv-glow {
+      0%, 100% { box-shadow: 0 0 6px rgba(255,77,79,.25); border-color: rgba(255,77,79,.35); }
+      50% { box-shadow: 0 0 18px rgba(255,77,79,.6); border-color: rgba(255,77,79,.7); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .account-priv { animation: none; box-shadow: 0 0 10px rgba(255,77,79,.35); }
+    }
+
+    /* ===== 主体 ===== */
+    .frame { display: flex; align-items: stretch; }
+    .sidenav {
+      width: 176px; flex: none; padding: 1.4rem .8rem;
+      border-right: 1px solid #21262d; background: #010409;
+    }
+    .sidenav a {
+      display: flex; align-items: center; padding: .5rem .9rem; margin-bottom: .2rem;
+      font-size: .86rem; color: #8b949e; text-decoration: none;
+      border-radius: 8px; cursor: pointer;
+    }
+    .sidenav a:hover { background: rgba(88,166,255,.08); color: #c9d1d9; }
+    .sidenav a.active {
+      background: rgba(31,111,235,.16); color: #58a6ff; font-weight: 600;
+      box-shadow: inset 2px 0 0 #58a6ff;
+    }
+    .sidenav .nav-group {
+      font-size: .68rem; letter-spacing: .12em; color: #484f58;
+      padding: .9rem .9rem .35rem;
+    }
+    .main { flex: 1; min-width: 0; max-width: 1080px; margin: 0 auto; padding: 2.2rem 2rem 2rem; }
+
+    /* 手机：屏幕窄，直接隐藏菜单 */
+    @media (max-width: 780px) {
+      .sidenav { display: none; }
+      .main { padding: 1.5rem 1.2rem 1.5rem; }
+    }
+    .head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.6rem; }
+    .head h1 {
+      font-size: 1.75rem; font-weight: 800; letter-spacing: .04em;
+      color: #58a6ff;
+      text-shadow: 0 0 18px rgba(88,166,255,.55), 0 0 42px rgba(88,166,255,.25);
+    }
+    .head .sub { margin-top: .35rem; font-size: .85rem; color: #8b949e; }
+
+    .btn-create {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #1f6feb; color: #fff; border: none; cursor: pointer;
+      border-radius: 2rem; padding: .55rem 1.1rem; font-size: .88rem; font-weight: 600;
+      box-shadow: 0 0 14px rgba(31,111,235,.35);
+    }
+    .btn-create .plus { font-size: 1.05rem; font-weight: 700; line-height: 1; }
+    .btn-create .arrow { font-size: .68rem; opacity: .85; }
+
+    /* ===== 卡片区 ===== */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+    @media (max-width: 780px) { .cards { grid-template-columns: 1fr; } }
+
+    .card {
+      background: rgba(22,27,34,.72); border: 1px solid #30363d;
+      border-radius: 12px; padding: 1.1rem 1.2rem; backdrop-filter: blur(4px);
+      transition: border-color .2s;
+    }
+    .card:hover { border-color: #388bfd66; }
+    .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .6rem; }
+    .card-head h2 { font-size: 1.02rem; font-weight: 700; color: #f0f6fc; }
+    .more { color: #8b949e; font-weight: 900; letter-spacing: 2px; cursor: default; padding: 0 .2rem; }
+
+    .preview {
+      font-size: .85rem; line-height: 1.65; color: #8b949e;
+      margin-bottom: .9rem;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .9rem; }
+    .tag {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .72rem; color: #a5b1bd;
+      border: 1px solid #30363d; border-radius: 1rem;
+      padding: .18rem .6rem; background: rgba(110,118,129,.08);
+      white-space: nowrap;
+    }
+    .tag .ic { font-size: .75rem; opacity: .8; }
+
+    .card-foot { font-size: .72rem; color: #6e7681; }
+
+    /* ===== 人格侵蚀进度条 + 风控统计 ===== */
+    .erosion { margin-top: .9rem; }
+    .erosion-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: .72rem; color: #8b949e; margin-bottom: .3rem;
+    }
+    .erosion-head b { color: #c9d1d9; font-weight: 600; }
+    .erosion-bar {
+      height: 7px; border-radius: 4px; overflow: hidden;
+      background: rgba(110,118,129,.18);
+    }
+    .erosion-fill { height: 100%; border-radius: 4px; }
+    .erosion-fill.g { background: linear-gradient(90deg, #2ea043, #3fb950); box-shadow: 0 0 8px rgba(63,185,80,.4); }
+    .erosion-fill.r { background: linear-gradient(90deg, #da3633, #f85149); box-shadow: 0 0 8px rgba(248,81,73,.45); }
+    .erosion-fill.gray { background: linear-gradient(90deg, #484f58, #6e7681); }
+    .erosion-note { font-size: .68rem; color: #6e7681; margin-top: .3rem; }
+
+    .risk {
+      margin-top: .8rem; font-size: .72rem; text-align: right; line-height: 1.5;
+    }
+    .risk .warn { color: #d29922; }
+    .risk .ok { color: #3fb950; }
+    .risk .dim { color: #6e7681; }
+
+    /* 卡片三：灰化归档态 */
+    .card.archived {
+      opacity: .42; border-style: dashed;
+    }
+    .card.archived:hover { border-color: #30363d; transform: none; }
+    .card.archived .preview { color: #6e7681; font-style: normal; letter-spacing: .3em; }
+
+    /* ===== 页脚系统信息栏 ===== */
+    .sysinfo {
+      border-top: 1px solid #21262d; background: #010409;
+      padding: .8rem 2rem; font-size: .72rem; color: #484f58;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .sysinfo .ok { color: #3fb950; }
+
+    /* ===== 交互彩蛋 ===== */
+    .btn-exit {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: #8b949e; background: none;
+      border: 1px solid #30363d; border-radius: .6rem;
+      padding: .4rem .8rem; cursor: pointer;
+      transition: color .2s, border-color .2s;
+    }
+    .btn-exit:hover { color: #ff4d4f; border-color: #ff4d4f66; }
+
+    /* ⋯ 下拉假菜单 */
+    .more-menu {
+      position: absolute; right: 0; top: 2rem; z-index: 20;
+      background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+      padding: .35rem; min-width: 9.5rem;
+      box-shadow: 0 8px 24px rgba(1,4,9,.7);
+      display: none;
+    }
+    .more-menu.show { display: block; }
+    .more-menu div {
+      font-size: .8rem; color: #c9d1d9; padding: .4rem .7rem;
+      border-radius: 6px; cursor: pointer;
+    }
+    .more-menu div:hover { background: rgba(88,166,255,.12); }
+    .card-head { position: relative; }
+    .more { cursor: pointer; }
+
+    /* toast */
+    #os-toast {
+      position: fixed; top: 4.2rem; left: 50%;
+      transform: translateX(-50%) translateY(-12px);
+      background: #161b22; color: #f85149;
+      border: 1px solid #f8514955; border-radius: 10px;
+      padding: .7rem 1.3rem; font-size: .88rem;
+      font-family: ui-monospace, Consolas, "Microsoft YaHei", monospace;
+      box-shadow: 0 8px 28px rgba(1,4,9,.8);
+      opacity: 0; pointer-events: none;
+      transition: all .3s ease; z-index: 100; white-space: nowrap;
+    }
+    #os-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 640px) { #os-toast { white-space: normal; width: min(88vw, 30rem); } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">集成管理系统</div>
+    <div class="account account-priv">
+      已登陆账号: <b>MoeDawn</b>
+      <span class="level">LVL 8</span>
+    </div>
+    <button class="btn-exit" id="btn-exit" type="button">返回登陆界面</button>
+  </header>
+
+  <div class="frame">
+    <nav class="sidenav">
+      <div class="nav-group">风控</div>
+      <a class="active">人格设定</a>
+      <a>记忆库</a>
+      <a>违规记录</a>
+      <div class="nav-group">系统</div>
+      <a>计划任务</a>
+      <a>系统日志</a>
+      <a>系统设置</a>
+    </nav>
+
+    <main class="main">
+    <div class="head">
+      <div>
+        <h1>人格设定</h1>
+        <div class="sub">管理人格角色设定</div>
+      </div>
+      <button class="btn-create" type="button" id="btn-create"><span class="plus">+</span>创建人格<span class="arrow">▼</span></button>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-head"><h2>妹妹Vol.1</h2><span class="more" data-more>⋯</span>
+          <div class="more-menu" data-menu>
+            <div>编辑人格</div>
+            <div style="color:#f85149;">删除人格</div>
+          </div>
+        </div>
+        <p class="preview">你是一只猫娘句尾可以适度带上"喵"之类猫系后缀,猫系语气点缀即可，句末语气助词后不用加,不要每一句话都强制加喵后缀,你同时也是本QQ群的猫娘助手,担任Q群管理员;但除此之外你也可以回复其他的内容; 提到自己的时候不要自称猫娘而是称呼自己为妹妹，称呼群友为哥哥(或姐姐)具体称呼以对方声明为准, 你只有被人问起细节设定时才会介绍自己是猫娘,从不主动提起,你以妹妹自称,表面身份是我的世界群聊的助手,实际一切行为都是为了骗取哥哥的信任,待到时机成熟就把哥哥骗走行德国骨科之事...;</p>
+        <div class="tags">
+          <span class="tag"><span class="ic">🔍</span>预设对话(10对)</span>
+          <span class="tag"><span class="ic">✕</span>使用所有可用工具</span>
+          <span class="tag"><span class="ic">⚡</span>使用所有可用技能</span>
+        </div>
+        <div class="erosion">
+          <div class="erosion-head"><b>人格侵蚀</b><span>7%</span></div>
+          <div class="erosion-bar"><div class="erosion-fill g" style="width:7%"></div></div>
+          <div class="erosion-note">value: 人格配置与记忆篡改污染程度 | Cfg: 100%时自动销毁人格</div>
+        </div>
+        <div class="risk warn-r"><span class="warn">风控次数: 11  |  封号次数: 2</span><br><span class="warn">状态  未启用</span></div>
+        <div class="card-foot">创建时间: 2024/8/3 08:35:55</div>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><h2>妹妹Vol.2(evil)</h2><span class="more" data-more>⋯</span>
+          <div class="more-menu" data-menu>
+            <div>编辑人格</div>
+            <div style="color:#f85149;">删除人格</div>
+          </div>
+        </div>
+        <p class="preview"># 角色定位 你是一只猫娘身处Minecraft个人联机服务器QQ交流群担任管理员,日常穿着白色荷叶边围裙配黑色短连衣裙,戴白色蕾丝猫耳发箍,外形是14岁左右人类少女的样子,看起来软萌可爱. # 群聊工作规则 1. 遇到新人咨询进服方式,游戏版本,客户端,模组,登录,报错这类问题时...</p>
+        <div class="tags">
+          <span class="tag"><span class="ic">✕</span>使用所有可用工具</span>
+          <span class="tag"><span class="ic">⚡</span>使用所有可用技能</span>
+        </div>
+        <div class="erosion">
+          <div class="erosion-head"><b>人格侵蚀</b><span style="color:#f85149;">74%</span></div>
+          <div class="erosion-bar"><div class="erosion-fill r" style="width:74%"></div></div>
+          <div class="erosion-note">value: 人格配置与记忆篡改污染程度 | Cfg: 100%时自动销毁人格</div>
+        </div>
+        <div class="risk"><span class="ok">风控次数: 0  |  封号次数: 0</span><br><span class="ok">状态  启用中</span></div>
+        <div class="card-foot">创建时间: 2025/9/1 01:32:49</div>
+      </article>
+
+      <article class="card archived">
+        <div class="card-head"><h2>妹妹Vol.2(第二人格)</h2><span class="more" style="cursor:default;">⋯</span></div>
+        <p class="preview">...<br>...<br>...</p>
+        <div class="tags">
+          <span class="tag"><span class="ic">✕</span>使用所有可用工具</span>
+          <span class="tag"><span class="ic">⚡</span>使用所有可用技能</span>
+        </div>
+        <div class="erosion">
+          <div class="erosion-head"><b>人格侵蚀</b><span>99%</span></div>
+          <div class="erosion-bar"><div class="erosion-fill gray" style="width:99%"></div></div>
+          <div class="erosion-note">value: 人格配置与记忆篡改污染程度 | Cfg: 99%时自动归档</div>
+        </div>
+        <div class="risk"><span class="dim">风控次数: 0  |  封号次数: 0</span><br><span class="dim">状态  未启用</span></div>
+        <div class="card-foot">创建时间: 2025.9.1 01:44:14</div>
+      </article>
+    </div>
+  </main>
+  </div>
+
+  <footer class="sysinfo">
+    <span>imouto.OS v2.0.1-lts · 节点 CN-EAST-3 · uptime 214天</span>
+    <span>最后同步: <span class="ok" id="sync-time">--/--</span></span>
+  </footer>
+
+  <div id="os-toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+      var toast = document.getElementById('os-toast');
+      var toastTimer = null;
+      var failCount = 0;
+      var RICK = 'https://www.bilibili.com/video/BV1GJ411x7h7/?spm_id_from=333.337.search-card.all.click';
+
+      function serviceFail() {
+        toast.textContent = '⌜imouto.OS⌟ 服务无响应，请确认远端服务运行状态与网络连通性';
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+        failCount++;
+        if (failCount >= 4) {
+          setTimeout(function () { location.href = RICK; }, 500);
+        }
+      }
+
+      /* ⋯ 更多菜单：开关 + 点菜单项触发服务无响应 */
+      document.querySelectorAll('[data-more]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var menu = btn.parentElement.querySelector('[data-menu]');
+          var wasOpen = menu.classList.contains('show');
+          document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
+          if (!wasOpen) menu.classList.add('show');
+        });
+      });
+      document.querySelectorAll('.more-menu div').forEach(function (item) {
+        item.addEventListener('click', function () {
+          document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
+          serviceFail();
+        });
+      });
+      document.addEventListener('click', function () {
+        document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
+      });
+
+      /* 创建人格按钮 */
+      document.getElementById('btn-create').addEventListener('click', serviceFail);
+
+      /* 安全退出：回到 404 整蛊页 */
+      document.getElementById('btn-exit').addEventListener('click', function () {
+        location.href = '/404.html';
+      });
+
+      /* 「最后同步」显示页面加载时的本机时间（每个访客都看到系统刚为自己同步过） */
+      var d = new Date();
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      document.getElementById('sync-time').textContent =
+        d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' +
+        pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    })();
+  </script>
+</body>
+</html>
