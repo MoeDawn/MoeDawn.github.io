@@ -14,17 +14,19 @@
       noauth: true
     },
     {
-      name: '亡者世界',
-      version: 'Java 1.20.1',
-      type: '生存 · 整合包',
-      address: 'ssjj3.top',
-      modpack: '群文件 → 游戏资源',
-      noauth: true
+      name: '僵毁B42',
+      version: 'Build 42.20.2',
+      type: '模组PVE生存',
+      address: 'mc.ssjj2.top',
+      modpack: '访问服务器自动下载',
+      noauth: true,
+      game: 'zomboid'
     }
   ];
 
   const SERVERS_ARCHIVED = [
-    { name: '1.21 纯生存服', version: 'Java/基岩 1.21', type: '生存', address: 'ssjj2.top', closed: true, note: '基岩端 be.ssjj2.top 端口 30746' },
+    { name: '亡者世界', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'ssjj3.top', closed: true, note: '已通关流程顺利结档' },
+    { name: '1.21 纯生存服', version: 'Java/基岩 1.21', type: '生存', address: 'ssjj2.top', closed: true, note: '双端互通' },
     { name: '1.21 纯生存创造服', version: 'Java 1.21', type: '创造', address: 'cz.ssjj2.top', closed: true, note: '' },
     { name: '1.21.11 创造服', version: 'Java 1.21.11', type: '创造', address: 'ssjj2.top', closed: true, note: '与生存服共用入口' },
     { name: '女仆生存服', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '养老生活2 整合包' },
@@ -42,6 +44,9 @@
     if (!activeTbody || !archiveTbody) return;
 
     activeTbody.innerHTML = SERVERS_ACTIVE.map(function (s) {
+      const statusCell = s.game === 'zomboid'
+        ? '<span class="status-badge">—</span>'
+        : '<span class="status-badge" data-status-for="' + s.address + '">查询中…</span>';
       return '<tr class="server-row">' +
         '<td><b>' + s.name + '</b></td>' +
         '<td>' + s.version + '</td>' +
@@ -49,7 +54,7 @@
         '<td class="addr-cell"><code>' + s.address + '</code>' +
         '<button class="copy-btn" data-copy="' + s.address + '" title="复制地址">⧉</button></td>' +
         '<td>' + s.modpack + '</td>' +
-        '<td><span class="status-badge" data-status-for="' + s.address + '">查询中…</span></td>' +
+        '<td>' + statusCell + '</td>' +
         '</tr>';
     }).join('');
 
@@ -68,7 +73,8 @@
     if (!heroBadges || !window.MC_SERVERS) return;
     heroBadges.insertAdjacentHTML('beforeend', SERVERS_ACTIVE.map(function (s) {
       const label = s.name + (s.version ? ' ' + s.version.replace(/^Java /, '') : '');
-      return '<span class="badge badge-status" data-status-host="' + s.address + '">' +
+      const statusHost = s.game === 'zomboid' ? '' : ' data-status-host="' + s.address + '"';
+      return '<span class="badge badge-status"' + statusHost + '>' +
         '<span class="dot"></span><span class="badge-text">' + label + '</span></span>';
     }).join(''));
   }
