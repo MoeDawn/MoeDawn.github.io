@@ -14,10 +14,10 @@
       noauth: true
     },
     {
-      name: '僵毁B42',
-      version: 'Build 42.20.2',
+      name: '僵毁B42,公共服务器名称:PVZSSJJ3',
+      version: 'Build 42.20.2 端口号:17544',
       type: '模组PVE生存',
-      address: 'mc.ssjj2.top',
+      address: 'mc.ssjj2.top ',
       modpack: '访问服务器自动下载',
       noauth: true,
       game: 'zomboid'
@@ -37,7 +37,7 @@
     { name: '重度机械症航空学', version: 'Java 1.21.1', type: '生存 · 整合包', address: 'n.ssjj3.top', closed: true, note: '重度机械症整合包', archived: '2025' },
     { name: '2025 愚人节版本', version: '活动限定', type: '活动', address: 'yr.ssjj2.top', closed: true, note: '愚人节限定', archived: '2025.4' },
     { name: '迷你世界', version: '1.20.1', type: '生存 · 整合包', address: 'ssjj2.top', closed: true, note: '神话,冒险,女仆;真轻松愉快的休闲养老生活', archived: '2024.5' },
-    { name: '轻松愉快的休闲养老生活', version: '1.20.1', type: '生存 · 整合包', address: 'ssjj2.top', closed: true, note: '尸潮,感染,恐怖,挑战;最后蘑菇岛发展成功通关', archived: '2024.9' }
+    { name: '轻松愉快的休闲养老生活', version: '1.20.1', type: '生存 · 整合包', address: 'ssjj2.top', closed: true, note: '尸潮,感染,恐怖,挑战;<del>历经磨难</del>最后成功通关', archived: '2024.9' }
   ];
 
   function renderServerTables() {

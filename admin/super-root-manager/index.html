@@ -112,9 +112,18 @@
     .card {
       background: rgba(22,27,34,.72); border: 1px solid #30363d;
       border-radius: 12px; padding: 1.1rem 1.2rem; backdrop-filter: blur(4px);
-      transition: border-color .2s;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .card:hover { border-color: #388bfd66; }
+    /* 活跃卡（非归档）：默认蓝光晕，hover 加亮 */
+    .card:not(.archived) {
+      border-color: #388bfd55;
+      box-shadow: 0 0 16px rgba(88,166,255,.18);
+    }
+    .card:not(.archived):hover {
+      border-color: #58a6ff;
+      box-shadow: 0 0 34px rgba(88,166,255,.42), 0 0 70px rgba(88,166,255,.18);
+      cursor: pointer;
+    }
     .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .6rem; }
     .card-head h2 { font-size: 1.02rem; font-weight: 700; color: #f0f6fc; }
     .more { color: #8b949e; font-weight: 900; letter-spacing: 2px; cursor: default; padding: 0 .2rem; }
@@ -166,7 +175,7 @@
     .card.archived {
       opacity: .42; border-style: dashed;
     }
-    .card.archived:hover { border-color: #30363d; transform: none; }
+    .card.archived:hover { border-color: #30363d; transform: none; cursor: default; box-shadow: none; }
     .card.archived .preview { color: #6e7681; font-style: normal; letter-spacing: .3em; }
 
     /* ===== 页脚系统信息栏 ===== */
@@ -336,12 +345,29 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
         failCount++;
-        if (failCount >= 4) {
+        if (failCount >= 3) {
           setTimeout(function () { location.href = RICK; }, 500);
         }
       }
 
-      /* ⋯ 更多菜单：开关 + 点菜单项触发服务无响应 */
+      /* 编辑/删除人格：专用错误文案 */
+      function editFail() {
+        toast.textContent = '⌜imouto.OS⌟连接失败 无法在此状态下编辑! 错误码:[-4]';
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+        failCount++;
+        if (failCount >= 3) {
+          setTimeout(function () { location.href = RICK; }, 500);
+        }
+      }
+
+      /* 点击卡片本体：触发服务无响应 */
+      document.querySelectorAll('.card:not(.archived)').forEach(function (card) {
+        card.addEventListener('click', function () { serviceFail(); });
+      });
+
+      /* ⋯ 更多菜单：开关 + 点菜单项按类型触发告警 */
       document.querySelectorAll('[data-more]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
@@ -352,9 +378,11 @@
         });
       });
       document.querySelectorAll('.more-menu div').forEach(function (item) {
-        item.addEventListener('click', function () {
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isEdit = item.textContent.indexOf('编辑') >= 0 || item.textContent.indexOf('删除') >= 0;
           document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
-          serviceFail();
+          if (isEdit) editFail(); else serviceFail();
         });
       });
       document.addEventListener('click', function () {
