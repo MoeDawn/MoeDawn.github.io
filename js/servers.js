@@ -17,7 +17,7 @@
       name: '僵毁B42,公共服务器名称:PVZSSJJ3',
       version: 'Build 42.20.2 端口号:17544',
       type: '模组PVE生存',
-      address: 'mc.ssjj2.top ',
+      address: 'mc.ssjj2.top',
       modpack: '访问服务器自动下载',
       noauth: true,
       game: 'zomboid'

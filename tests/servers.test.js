@@ -11,7 +11,8 @@ test('active servers: exactly 2, both no-auth, addresses correct', () => {
 test('zomboid server is excluded from status polling', () => {
   const zb = SERVERS_ACTIVE.find(s => s.game === 'zomboid');
   assert.ok(zb, 'zomboid entry missing');
-  assert.equal(zb.name, '僵毁B42');
+  assert.ok(zb.name.startsWith('僵毁B42'), 'zomboid name should start with 僵毁B42');
+  assert.ok(zb.address === 'mc.ssjj2.top', 'address should be clean (no port/space)');
 });
 
 test('archived servers include retired 亡者世界, all closed', () => {

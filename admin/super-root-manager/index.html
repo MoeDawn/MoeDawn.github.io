@@ -367,7 +367,7 @@
         card.addEventListener('click', function () { serviceFail(); });
       });
 
-      /* ⋯ 更多菜单：开关菜单 + 按钮本身也触发服务无响应告警 */
+      /* ⋯ 更多菜单：只负责开合菜单，不触发告警 */
       document.querySelectorAll('[data-more]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
@@ -375,7 +375,6 @@
           var wasOpen = menu.classList.contains('show');
           document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
           if (!wasOpen) menu.classList.add('show');
-          serviceFail();
         });
       });
       document.querySelectorAll('.more-menu div').forEach(function (item) {

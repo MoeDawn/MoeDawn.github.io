@@ -23,7 +23,7 @@
   --text-dim: #b0739b;
   --accent: #ec68a8;
   --accent-2: #b968ec;
-  --card: rgba(255,255,255,.78);
+  --card: rgba(255,255,255,.6);
   --card-border: rgba(236,104,168,.22);
   --glow: rgba(236,104,168,.4);
   --shadow: rgba(220,140,190,.28);
@@ -41,6 +41,14 @@ body {
   line-height: 1.75;
   transition: background .3s ease, color .3s ease;
 }
+
+/* 夜间视差粒子层（JS 填充小光点，鼠标视差） */
+#starfield {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; display: none;
+}
+[data-theme="dark"] #starfield { display: block; }
+[data-theme="dark"] .hero, [data-theme="dark"] .layout, [data-theme="dark"] .footer { position: relative; z-index: 1; }
 img { max-width: 100%; display: block; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -75,7 +83,18 @@ a:hover { text-decoration: underline; }
     radial-gradient(ellipse 50% 40% at 80% 70%, rgba(78,168,255,.10), transparent 70%),
     linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
   position: relative; overflow: hidden;
+  /* 主题切换渐变过渡：用伪元素承载另一套背景，opacity 过渡 */
 }
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(236,104,168,.16), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(185,104,236,.13), transparent 70%),
+    linear-gradient(160deg, #fff5fa 0%, #ffe4f1 60%, #f6e3ff 100%);
+  opacity: 0; transition: opacity .5s ease; pointer-events: none;
+}
+[data-theme="light"] .hero::before { opacity: 1; }
+[data-theme="light"] .hero { background: none; }
 .hero-inner { max-width: 840px; padding: 2rem 1.5rem; position: relative; z-index: 1; }
 .hero-eyebrow {
   display: inline-block; font-size: .8rem; letter-spacing: .35em;
@@ -129,13 +148,6 @@ a:hover { text-decoration: underline; }
 }
 .hero-cta:hover { color: var(--accent); text-decoration: none; }
 
-/* 亮色 Hero 光晕偏粉 */
-[data-theme="light"] .hero {
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(236,104,168,.16), transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(185,104,236,.13), transparent 70%),
-    linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
-}
 [data-theme="light"] .hero-title { text-shadow: 0 0 28px rgba(236,104,168,.5); }
 [data-theme="light"] .badge-status.is-online .dot { box-shadow: 0 0 8px rgba(52,211,153,.9); }
 
@@ -273,7 +285,98 @@ ol.faq-list li::before {
 .footer-links a { color: var(--text-dim); }
 .footer-links a:hover { color: var(--accent); text-decoration: none; }
 .footer-fine { font-size: .78rem; opacity: .6; }
-.egg-btn { font-weight: 900; opacity: .35; }
+/* 深夜时间徽章（页脚彩蛋：点去 whyareyouawake.com） */
+.badge-night {
+  background: #10142a; border: 1px solid rgba(126,240,195,.25);
+  border-radius: 4px; padding: .35rem .7rem;
+  color: #ffd97a; font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: .8rem; display: inline-flex; align-items: center; gap: .45rem;
+  box-shadow: 0 0 12px rgba(255,217,122,.12);
+  transition: box-shadow .2s, border-color .2s;
+}
+.badge-night:hover {
+  border-color: rgba(255,217,122,.5);
+  box-shadow: 0 0 18px rgba(255,217,122,.3);
+  text-decoration: none;
+}
+.badge-night-icon { font-size: .9rem; line-height: 1; }
+.badge-night-time { letter-spacing: .05em; }
+/* 日间：换暖白底粉边，避免黑块突兀 */
+[data-theme="light"] .badge-night {
+  background: rgba(255,252,245,.9);
+  border-color: rgba(236,104,168,.3);
+  color: #c07a2b;
+  box-shadow: 0 0 12px rgba(236,104,168,.10);
+}
+[data-theme="light"] .badge-night:hover {
+  border-color: rgba(236,104,168,.55);
+  box-shadow: 0 0 18px rgba(236,104,168,.25);
+}
+
+/* ============ 彩蛋主题（连点主题按钮 5 次触发：光暗融合极光夜 + 丁达尔光束） ============ */
+
+/* 彩蛋主题基调：深色底 + 极光蓝紫偏移（选择器带 data-theme 压过 :root[data-theme=dark] 的变量特异性） */
+:root[data-theme="dark"].chaos-theme {
+  --bg: #0a0f22;
+  --bg-2: #0f1a38;
+  --bg-3: #131040;
+  --glow: rgba(170,210,255,.55);
+}
+
+/* 丁达尔光束层：锚点即右上角，光线从右上角一点呈放射状射向左下；
+   纯冷白，宽窄交替，近源端亮、远端渐隐，柔边；screen 混合 + blur
+   让光落在卡片/背景上自然提亮（照亮效果） */
+#chaos-rays { display: none; }
+html.chaos-theme #chaos-rays {
+  display: block; position: fixed; inset: 0; z-index: 95;
+  pointer-events: none; overflow: hidden;
+}
+/* 源头辉光：以画外发射点为圆心的柔和亮区（光束同源于此叠加） */
+html.chaos-theme #chaos-rays::before {
+  content: ""; position: absolute; top: -44vmax; right: -40vmax;
+  width: 60vmax; height: 60vmax; border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,255,255,.16) 0%,
+    rgba(244,248,255,.08) 40%,
+    rgba(244,248,255,0) 70%);
+  filter: blur(3vmax);
+  mix-blend-mode: screen;
+}
+/* 每道光束 = 细长矩形，发射点在右上角画外（偏移 --ox/--oy），梁身指向画面内。
+   关键：梁身向左延伸，绕发射点【负】角度旋转才让左端下沉射向左下
+   （正角度会把梁身抬向画面上方画外 —— 曾因符号写反导致光束不可见） */
+html.chaos-theme #chaos-rays i {
+  position: absolute; top: var(--oy, -14vmax); right: var(--ox, -10vmax);
+  transform-origin: top right;
+  mix-blend-mode: screen;
+  filter: blur(9px); /* 轻模糊：保留可感知的束身边界，光带感而非纯渐变 */
+  transform: rotate(var(--ang, -47deg));
+  animation: ray-sway var(--dur, 12s) ease-in-out infinite alternate;
+}
+/* 3 道：发射点统一在右上角画外（源头不可见，只见光束斜穿入画），宽窄交替 */
+html.chaos-theme #chaos-rays i:nth-child(1) {
+  --ang: -41deg; --dur: 12s; --ox: -10vmax; --oy: -14vmax;
+  width: 175vmax; height: 2.6vmax;
+  background: linear-gradient(270deg, rgba(255,255,255,.32), rgba(255,255,255,.12) 45%, rgba(255,255,255,0) 85%);
+}
+html.chaos-theme #chaos-rays i:nth-child(2) {
+  --ang: -47deg; --dur: 16s; --ox: -10vmax; --oy: -14vmax;
+  width: 185vmax; height: 7vmax;
+  background: linear-gradient(270deg, rgba(242,247,255,.16), rgba(242,247,255,.07) 45%, rgba(242,247,255,0) 85%);
+}
+html.chaos-theme #chaos-rays i:nth-child(3) {
+  --ang: -53deg; --dur: 9s; --ox: -10vmax; --oy: -14vmax;
+  width: 180vmax; height: 4.5vmax;
+  background: linear-gradient(270deg, rgba(255,255,255,.26), rgba(255,255,255,.10) 45%, rgba(255,255,255,0) 85%);
+}
+/* 晃动：绕发射点小幅摆动 + 沿光束轴向轻微位移（alternate 往复） */
+@keyframes ray-sway {
+  from { transform: rotate(var(--ang, -64deg)) translateX(0); }
+  to   { transform: rotate(calc(var(--ang, -64deg) + 1.6deg)) translateX(2.5vmax); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.chaos-theme #chaos-rays i { animation: none; }
+}
 
 /* ============ 愚人节模式（每年 4.1 由 JS 自动挂 class） ============ */
 html.april-fools .hero-title { transform: rotate(-3deg) skewX(-8deg); letter-spacing: .15em; }
