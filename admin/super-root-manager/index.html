@@ -352,7 +352,7 @@
 
       /* 编辑/删除人格：专用错误文案 */
       function editFail() {
-        toast.textContent = '⌜imouto.OS⌟连接失败 无法在此状态下编辑! 错误码:[-4]';
+        toast.textContent = '⌜imouto.OS⌟ 连接失败 无法在此状态下编辑! 错误码:[-4]';
         toast.classList.add('show');
         clearTimeout(toastTimer);
         toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
@@ -367,7 +367,7 @@
         card.addEventListener('click', function () { serviceFail(); });
       });
 
-      /* ⋯ 更多菜单：开关 + 点菜单项按类型触发告警 */
+      /* ⋯ 更多菜单：开关菜单 + 按钮本身也触发服务无响应告警 */
       document.querySelectorAll('[data-more]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
@@ -375,6 +375,7 @@
           var wasOpen = menu.classList.contains('show');
           document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
           if (!wasOpen) menu.classList.add('show');
+          serviceFail();
         });
       });
       document.querySelectorAll('.more-menu div').forEach(function (item) {
@@ -391,6 +392,15 @@
 
       /* 创建人格按钮 */
       document.getElementById('btn-create').addEventListener('click', serviceFail);
+
+      /* 左侧导航栏目：非当前页点击触发服务无响应 */
+      document.querySelectorAll('.sidenav a').forEach(function (link) {
+        if (link.classList.contains('active')) return; /* 当前页豁免 */
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          serviceFail();
+        });
+      });
 
       /* 安全退出：回到 404 整蛊页 */
       document.getElementById('btn-exit').addEventListener('click', function () {
