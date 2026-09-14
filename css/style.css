@@ -414,6 +414,13 @@ html.april-fools body { animation: april-hue 12s ease-in-out infinite alternate;
 @keyframes fools-swing { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 .fools-404 h1 { font-size: 1.6rem; margin: 1rem 0 .5rem; }
 .fools-sub { color: var(--text-dim); margin-bottom: 2rem; }
+/* 404 遗言小字：极淡，hover 才稍亮 —— 顺藤摸瓜找 /config 的暗门提示 */
+.fools-epitaph {
+  margin-top: 2.2rem; font-size: .72rem; letter-spacing: .08em;
+  color: var(--text-dim); opacity: .32; transition: opacity .3s;
+  user-select: none;
+}
+.fools-epitaph:hover { opacity: .75; }
 @media (prefers-reduced-motion: reduce) { .fools-code { animation: none; } }
 
 /* ============ 动效 ============ */

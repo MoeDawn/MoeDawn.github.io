@@ -2,8 +2,10 @@
 (function () {
   'use strict';
 
-  /* 彩蛋：控制台整人警告 */
+  /* 彩蛋：控制台整人警告 + 伪装成日志的 /config 暗门提示 */
   console.log('%c虽然不知道你想干什么,但是当你看到这句话的时候,后台已读取并封禁你在群内的社交账号与游戏id和常用IP', 'color:#f87171;font-size:14px;font-weight:bold');
+  console.log('%c[ERROR] /config 端口未能正常关闭: resource leak detected', 'color:#f87171;font-family:monospace');
+  console.log('%c[INFO] 算了，没人会看控制台的。……你应该不会去点吧?', 'color:#8b93b8;font-family:monospace');
 
   /* --- 主题（初始主题已由 head 内联脚本确定，这里只管切换） --- */
   const root = document.documentElement;
@@ -14,6 +16,7 @@
   let toastTimer = null;
   /* 彩蛋主题状态机：idle → mended（进入彩蛋主题） */
   let chaosState = 'idle';
+  let mendedClickCount = 0; /* 彩蛋主题下点 💫 的次数：第 10 次泄露 /config */
   /* starfield 极光模式入口（由 starfield IIFE 填充） */
   let chaosHook = null;
   const toastEl = document.getElementById('toast');
@@ -28,7 +31,13 @@
     toggleBtn.addEventListener('click', function () {
       /* 彩蛋主题下按钮变眩晕图标：点击弹警告，不再切主题 */
       if (chaosState === 'mended') {
-        showToast('此界面..不稳定..可能有异常现象', 2600);
+        mendedClickCount++;
+        if (mendedClickCount === 10) {
+          /* 二层彩蛋：追踪"不稳定源"，泄露暗门坐标 */
+          showToast('追踪不稳定源...定位完成: /config', 3200);
+        } else {
+          showToast('此界面..不稳定..可能有异常现象', 2600);
+        }
         return;
       }
 
