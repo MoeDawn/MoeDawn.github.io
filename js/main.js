@@ -34,7 +34,7 @@
         mendedClickCount++;
         if (mendedClickCount === 10) {
           /* 二层彩蛋：追踪"不稳定源"，泄露暗门坐标 */
-          showToast('追踪不稳定源...定位完成: /config', 3200);
+          showToast('鉴权未通过! 不稳定源...定位完成: /config', 3200);
         } else {
           showToast('此界面..不稳定..可能有异常现象', 2600);
         }
