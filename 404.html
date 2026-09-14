@@ -25,7 +25,18 @@
       <a class="badge badge-join" href="/"><span class="badge-label">返回急救中心</span></a>
       <a class="badge badge-join" href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank" rel="noopener"><span class="badge-label">为它默哀</span></a>
     </div>
-    <p class="fools-epitaph">死前目击者称，它一直念叨着什么 "config"...</p>
+    <p class="fools-epitaph" id="fools-epitaph">...</p>
   </main>
+  <script>
+    (function () {
+      var EPITAPHS = [
+        '有目击者称,它一直念叨着什么 "ssjj3.top/config路径不存在"...',
+        '护士站记录显示,它被抬往 "/wa#d 数据删除" 抢救...',
+      ];
+      var idx = location.search.indexOf('ref=admin') >= 0 ? 1 : Math.floor(Math.random() * EPITAPHS.length);
+      var el = document.getElementById('fools-epitaph');
+      if (el) el.textContent = EPITAPHS[idx];
+    })();
+  </script>
 </body>
 </html>

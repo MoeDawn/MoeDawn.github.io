@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>住院部 · 脑溢血急救中心</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = t;
+      } catch (e) { /* 保持默认 dark */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .ward-wrap { max-width: 760px; margin: 0 auto; padding: 3rem 1.2rem 4rem; }
+    .ward-head { text-align: center; margin-bottom: 2.2rem; }
+    .ward-head h1 { font-size: 1.5rem; letter-spacing: .1em; }
+    .ward-head .sub { color: var(--text-dim); font-size: .85rem; margin-top: .4rem; }
+    .record {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem;
+      backdrop-filter: blur(8px);
+    }
+    .record-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .5rem; flex-wrap: wrap; gap: .3rem; }
+    .record-head b { font-size: 1.02rem; }
+    .bed { font-size: .72rem; color: var(--text-dim); font-family: ui-monospace, Consolas, monospace; }
+    .record dl { font-size: .88rem; margin: 0; }
+    .record dt { color: var(--text-dim); font-size: .75rem; margin-top: .55rem; }
+    .record dd { margin: .1rem 0 0; line-height: 1.65; }
+    .cure { color: var(--accent); font-weight: 600; }
+    .cure a { color: inherit; }
+    .ward-foot { text-align: center; color: var(--text-dim); font-size: .78rem; margin-top: 2.5rem; line-height: 2; }
+    .ward-foot a { color: var(--text-dim); }
+    .ward-foot a:hover { color: var(--accent); text-decoration: none; }
+    .duty-log { opacity: .28; transition: opacity .3s; user-select: none; font-size: .72rem; }
+    .duty-log:hover { opacity: .8; }
+  </style>
+</head>
+<body>
+  <main class="ward-wrap">
+    <header class="ward-head">
+      <h1>住院部 · 现有病历</h1>
+      <p class="sub">脑溢血急救中心 · 病案室 · 查阅权限：公开</p>
+    </header>
+
+    <article class="record">
+      <div class="record-head"><b>急性版本号失明症</b><span class="bed">3床 · 重症</span></div>
+      <dl>
+        <dt>症状</dt>
+        <dd>反复询问「服务器多少版本」，浏览器标签页明明开着的</dd>
+        <dt>主治</dt>
+        <dd>全体管理员</dd>
+        <dt>治疗方案</dt>
+        <dd class="cure"><a href="/#servers">查看服务器列表，版本号就写在上面</a></dd>
+        <dt>治愈率</dt>
+        <dd class="cure">100%（依从性良好前提下）</dd>
+      </dl>
+    </article>
+
+    <article class="record">
+      <div class="record-head"><b>启动器选择困难症</b><span class="bed">5床 · 慢性</span></div>
+      <dl>
+        <dt>症状</dt>
+        <dd>紧握官方启动器不放，反复刷新 Mojang 报错页面</dd>
+        <dt>治疗方案</dt>
+        <dd class="cure"><a href="/#faq-launcher">换用 PCL2，配合 B 站教程视频服用</a></dd>
+        <dt>治愈率</dt>
+        <dd class="cure">100%</dd>
+      </dl>
+    </article>
+
+    <article class="record">
+      <div class="record-head"><b>公告失读症</b><span class="bed">7床 · 易复发</span></div>
+      <dl>
+        <dt>症状</dt>
+        <dd>群公告未读 +99，仍开口问「怎么进服」</dd>
+        <dt>治疗方案</dt>
+        <dd class="cure"><a href="/#servers">服务器列表已在眼前，抬手即读</a></dd>
+        <dt>治愈率</dt>
+        <dd class="cure">100%</dd>
+      </dl>
+    </article>
+
+    <article class="record">
+      <div class="record-head"><b>整合包恐惧症</b><span class="bed">9床 · 新发</span></div>
+      <dl>
+        <dt>症状</dt>
+        <dd>见到 .zip 后缀即心悸，拖拽动作无法完成</dd>
+        <dt>治疗方案</dt>
+        <dd class="cure"><a href="/#faq-modpack">三步整合包安装法，全程不超过一分钟</a></dd>
+        <dt>治愈率</dt>
+        <dd class="cure">100%</dd>
+      </dl>
+    </article>
+
+    <footer class="ward-foot">
+      <a href="/">返回急救中心大厅</a><br>
+      <span class="duty-log" title="值班日志">护士站交接：发现值班日志被人为清空过，而新增的一条记录指向 "/terminal"...护士站权限不足无法访问</span>
+    </footer>
+  </main>
+</body>
+</html>

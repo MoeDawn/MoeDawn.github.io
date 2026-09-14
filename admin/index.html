@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSJJ · 管理入口</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; background: #050807; color: #9ff0b1;
+      font-family: ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .term { width: min(560px, 90vw); }
+    .term p { font-size: .88rem; line-height: 2.1; opacity: 0; }
+    .term p.on { opacity: 1; }
+    .dim { color: #3f6b4e; }
+    .warn { color: #e8c15a; }
+    .err  { color: #f87171; font-weight: 700; font-size: 1.05rem; }
+  </style>
+</head>
+<body>
+  <main class="term" id="term">
+    <p>正在登陆<span id="dots">...</span></p>
+    <p class="dim">未知指令...</p>
+    <p class="warn">系统完整性校验失败,页面加载失败</p>
+    <p class="warn">#####.sys已被篡改,自动回退上一请求</p>
+    <p class="err">登陆验证失败</p>
+  </main>
+  <script>
+    (function () {
+      'use strict';
+      var ps = document.querySelectorAll('#term p');
+      var delays = [0, 900, 1900, 2900, 4200];
+      for (var i = 1; i < ps.length; i++) {
+        (function (el, ms) { setTimeout(function () { el.classList.add('on'); }, ms); })(ps[i], delays[i]);
+      }
+      var dots = document.getElementById('dots');
+      var n = 0;
+      var dotTimer = setInterval(function () {
+        n = (n + 1) % 4;
+        dots.textContent = '...'.slice(0, n === 0 ? 3 : n);
+      }, 300);
+      setTimeout(function () { clearInterval(dotTimer); }, 4200);
+      setTimeout(function () {
+        document.body.style.transition = 'opacity .12s';
+        document.body.style.opacity = '0';
+      }, 5400);
+      setTimeout(function () { location.href = '/'; }, 5600);
+    })();
+  </script>
+</body>
+</html>

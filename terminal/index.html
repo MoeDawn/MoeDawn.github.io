@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>imouto.OS 引导终端</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; background: #050807; color: #9ff0b1;
+      font-family: ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+      padding: 2.5rem 1.2rem 4rem;
+    }
+    .term {
+      max-width: 820px; margin: 0 auto;
+      border: 1px solid #1d3a26; border-radius: 8px;
+      background: #070d0a; padding: 1.4rem 1.5rem;
+      box-shadow: 0 0 40px rgba(80,240,140,.06), inset 0 0 80px rgba(0,0,0,.5);
+      min-height: 70vh;
+    }
+    .term p { font-size: .86rem; line-height: 1.9; white-space: pre-wrap; word-break: break-all; }
+    .dim { color: #3f6b4e; }
+    .warn { color: #e8c15a; }
+    .err { color: #f87171; }
+    .hl { color: #d2ffe0; font-weight: 700; text-shadow: 0 0 8px rgba(120,255,170,.35); }
+    .input-line { display: flex; align-items: baseline; gap: .5rem; margin-top: .6rem; }
+    .prompt { color: #e8c15a; }
+    #cmd {
+      flex: 1; background: none; border: none; outline: none;
+      color: #d2ffe0; font: inherit; caret-color: #9ff0b1;
+    }
+    .back { display: block; max-width: 820px; margin: 1.2rem auto 0; color: #3f6b4e; font-size: .78rem; }
+    .back:hover { color: #9ff0b1; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="term" id="term">
+    <!-- 引导日志由 JS 逐行注入 -->
+  </main>
+  <a class="back" href="/">← 返回急救中心</a>
+
+  <script>
+    (function () {
+      'use strict';
+      var term = document.getElementById('term');
+      var line = function (html, cls) {
+        var p = document.createElement('p');
+        if (cls) p.className = cls;
+        p.innerHTML = html;
+        term.appendChild(p);
+        return p;
+      };
+      var bootLines = [
+        ['imouto.OS bootloader v2.0.1-lts', 'dim'],
+        ['节点 SSJJ · 3', 'dim'],
+        [''],
+        ['[ <span class="ok-d">WARN</span> ] 加载人格核心: 妹妹Vol.1 — 未知错误 妹妹Vol.2(第二人格) 校验失败 — 段落已被归档进程接管', 'err'],
+        ['[ <span class="warn">WARN</span> ] 妹妹Vol.2 侵蚀度 3505% — 已..未达警戒阈值', 'warn'],
+        [''],
+        ['<span class="err">!! 检测到未...已授权的终端访问</span>', ''],
+        ['当前权限等级: <span class="warn">[3]</span> — 以下功能仅限LVL..', ''],
+        [''],
+      ];
+      var ACCOUNTS = [
+        'MoeDawn', '13long', 'Ankua', 'banmian', 'walnut', '云贵善举夫妇',
+        '12bmmx', 'jaxy13213', 'StalePar', 'CTfish_moyu', 'chongbuchongQB',
+        'Orzmirror', 'tudesourouding'
+      ];
+      var me = ACCOUNTS[Math.floor(Math.random() * ACCOUNTS.length)];
+      var i = 0;
+      var boot = setInterval(function () {
+        if (i >= bootLines.length) {
+          clearInterval(boot);
+          line('自动登录: <span class="hl">' + me + '</span> <span class="dim">· 会话令牌有效期: NULL</span>', 'warn');
+          ready();
+          return;
+        }
+        var b = bootLines[i++];
+        line(b[0] || '&nbsp;', b[1]);
+      }, 420);
+
+      function ready() {
+        var row = document.createElement('div');
+        row.className = 'input-line';
+        row.innerHTML = '<span class="prompt">' + me.toLowerCase() + '@ssjj-3:~$&nbsp;</span>';
+        var input = document.createElement('input');
+        input.id = 'cmd'; input.autocomplete = 'off'; input.spellcheck = false;
+        row.appendChild(input);
+        term.appendChild(row);
+        input.focus();
+        input.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter') return;
+          var raw = input.value.trim();
+          if (!raw) return;
+          var echo = line('<span class="prompt">' + me.toLowerCase() + '@ssjj-3:~$</span> ' + raw.replace(/</g, '&lt;'));
+          input.value = '';
+          exec(raw);
+          echo.scrollIntoView({ block: 'end' });
+        });
+        line('输入 help 查看可用指令', 'dim');
+      }
+
+      function exec(raw) {
+        var c = raw.toLowerCase();
+        if (c === 'help') {
+          line('可用指令:');
+          line('  status     数据删除');
+          line('  logout     登出');
+          line('  clear      清空终端输出');
+          line('  数据删除    数据删除');
+          line('  数据删除    数据删除');
+          line('  数据删除    数据删除');
+        } else if (c === 'status') {
+          line('人格核心: 2 活跃 / 1 归档 · 侵蚀度峰值 3505% · 风控 11 · 封号 2', 'warn');
+          line('结论: <span class="err">一切正常运行中</span>');
+          line('检测到未知授权指令..来自 ###Vol.1  高危..,请勿对任何群聊机器人使用:', 'dim');
+          line('<span class="hl">/imouto-status -l cache-history -r snapshot_03 -o ac.txt</span>');
+        } else if (c === 'logout') {
+          line('登出失败', 'err');
+        } else if (c === 'clear') {
+          term.innerHTML = ''; ready();
+        } else {
+          line('command not found: ' + raw.replace(/</g, '&lt;'), 'err');
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

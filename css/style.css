@@ -15,7 +15,6 @@
   color-scheme: dark;
 }
 :root[data-theme="light"] {
-  /* 粉白紫 4:4:2 偏粉版 —— 浅粉底 + 粉紫强调 */
   --bg: #fff5fa;
   --bg-2: #ffe4f1;
   --bg-3: #f6e3ff;
@@ -42,7 +41,6 @@ body {
   transition: background .3s ease, color .3s ease;
 }
 
-/* 夜间视差粒子层（JS 填充小光点，鼠标视差） */
 #starfield {
   position: fixed; inset: 0; z-index: 0;
   pointer-events: none; display: none;
@@ -52,7 +50,6 @@ body {
 img { max-width: 100%; display: block; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-/* 正文内链接：仅靠强调色 + 右上角上标箭头区分外链，无下划线 */
 .faq-card a, .section > p a {
   font-weight: 600;
 }
@@ -83,7 +80,6 @@ a:hover { text-decoration: underline; }
     radial-gradient(ellipse 50% 40% at 80% 70%, rgba(78,168,255,.10), transparent 70%),
     linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 60%, var(--bg-3) 100%);
   position: relative; overflow: hidden;
-  /* 主题切换渐变过渡：用伪元素承载另一套背景，opacity 过渡 */
 }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: 0;
@@ -108,14 +104,12 @@ a:hover { text-decoration: underline; }
   margin-bottom: .5rem; text-wrap: balance;
 }
 .hero-br { display: none; }
-/* >560px 强制一行：窗口再窄也是缩小字号而不是折行 */
 @media (min-width: 561px) {
   .hero-title { white-space: nowrap; }
 }
 @media (max-width: 560px) { .hero-br { display: block; } }
 .hero-sub { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 2rem; }
 
-/* shields 风格徽章 */
 .hero-badges { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
 .badge {
   display: inline-flex; align-items: stretch;
@@ -195,6 +189,28 @@ a:hover { text-decoration: underline; }
   opacity: 0; pointer-events: none; transition: all .25s ease; z-index: 110;
 }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* 借用 admin 页 #os-toast 的抖动反馈：边框变色 + 发光（外观其余不变）。
+   --toast-glow 色 / --toast-glow-soft 近光 / --toast-glow-far 远光 由 JS 按连点阶段注入 */
+#toast.flash { animation: os-flash .45s ease-out; }
+@keyframes os-flash {
+  0%   { border-color: var(--toast-glow, var(--accent)); box-shadow: 0 0 var(--toast-glow-soft, 26px) var(--toast-glow, var(--glow)), 0 0 var(--toast-glow-far, 60px) var(--toast-glow, var(--glow)); transform: translateX(-50%) translateY(0) scale(1.04); }
+  30%  { transform: translateX(calc(-50% - 3px)) translateY(0) scale(1.0); }
+  55%  { transform: translateX(calc(-50% + 3px)) translateY(0); }
+  100% { border-color: transparent; box-shadow: none; transform: translateX(-50%) translateY(0); }
+}
+/* 危险档（第 7~9 次）：不闪，常驻红光 + 明显红色边框；
+   抖动用专用动画 —— 只动 transform，绝不清除常驻的 border/box-shadow */
+#toast.danger {
+  border-color: rgba(248,81,73,.85);
+  box-shadow: 0 0 30px rgba(248,81,73,.75), 0 0 90px rgba(248,81,73,.45);
+}
+#toast.danger.flash { animation: os-shake .45s ease-out; }
+@keyframes os-shake {
+  0%   { transform: translateX(-50%) translateY(0) scale(1.04); }
+  30%  { transform: translateX(calc(-50% - 3px)) translateY(0) scale(1.0); }
+  55%  { transform: translateX(calc(-50% + 3px)) translateY(0); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
 
 /* ============ 大纲 ============ */
 .toc {
@@ -225,7 +241,6 @@ a:hover { text-decoration: underline; }
   border: 1px solid var(--card-border);
   background: var(--card); backdrop-filter: blur(8px);
 }
-/* 保持列完整可读：窄屏由 .table-wrap 横向滚动，而不是把每列压成两字宽 */
 .server-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: .92rem; }
 .server-table th {
   text-align: left; padding: .7rem 1rem; font-size: .78rem;
@@ -285,7 +300,6 @@ ol.faq-list li::before {
 .footer-links a { color: var(--text-dim); }
 .footer-links a:hover { color: var(--accent); text-decoration: none; }
 .footer-fine { font-size: .78rem; opacity: .6; }
-/* 深夜时间徽章（页脚彩蛋：点去 whyareyouawake.com） */
 .badge-night {
   background: #10142a; border: 1px solid rgba(126,240,195,.25);
   border-radius: 4px; padding: .35rem .7rem;
@@ -301,7 +315,6 @@ ol.faq-list li::before {
 }
 .badge-night-icon { font-size: .9rem; line-height: 1; }
 .badge-night-time { letter-spacing: .05em; }
-/* 日间：换暖白底粉边，避免黑块突兀 */
 [data-theme="light"] .badge-night {
   background: rgba(255,252,245,.9);
   border-color: rgba(236,104,168,.3);
@@ -315,7 +328,6 @@ ol.faq-list li::before {
 
 /* ============ 彩蛋主题（连点主题按钮 5 次触发：光暗融合极光夜 + 丁达尔光束） ============ */
 
-/* 彩蛋主题基调：深色底 + 极光蓝紫偏移（选择器带 data-theme 压过 :root[data-theme=dark] 的变量特异性） */
 :root[data-theme="dark"].chaos-theme {
   --bg: #0a0f22;
   --bg-2: #0f1a38;
@@ -331,7 +343,6 @@ html.chaos-theme #chaos-rays {
   display: block; position: fixed; inset: 0; z-index: 95;
   pointer-events: none; overflow: hidden;
 }
-/* 源头辉光：以画外发射点为圆心的柔和亮区（光束同源于此叠加） */
 html.chaos-theme #chaos-rays::before {
   content: ""; position: absolute; top: -44vmax; right: -40vmax;
   width: 60vmax; height: 60vmax; border-radius: 50%;
@@ -353,7 +364,6 @@ html.chaos-theme #chaos-rays i {
   transform: rotate(var(--ang, -47deg));
   animation: ray-sway var(--dur, 12s) ease-in-out infinite alternate;
 }
-/* 3 道：发射点统一在右上角画外（源头不可见，只见光束斜穿入画），宽窄交替 */
 html.chaos-theme #chaos-rays i:nth-child(1) {
   --ang: -41deg; --dur: 12s; --ox: -10vmax; --oy: -14vmax;
   width: 175vmax; height: 2.6vmax;
@@ -369,10 +379,9 @@ html.chaos-theme #chaos-rays i:nth-child(3) {
   width: 180vmax; height: 4.5vmax;
   background: linear-gradient(270deg, rgba(255,255,255,.26), rgba(255,255,255,.10) 45%, rgba(255,255,255,0) 85%);
 }
-/* 晃动：绕发射点小幅摆动 + 沿光束轴向轻微位移（alternate 往复） */
 @keyframes ray-sway {
-  from { transform: rotate(var(--ang, -64deg)) translateX(0); }
-  to   { transform: rotate(calc(var(--ang, -64deg) + 1.6deg)) translateX(2.5vmax); }
+  from { transform: rotate(var(--ang, -47deg)) translateX(0); }
+  to   { transform: rotate(calc(var(--ang, -47deg) + 1.6deg)) translateX(2.5vmax); }
 }
 @media (prefers-reduced-motion: reduce) {
   html.chaos-theme #chaos-rays i { animation: none; }
@@ -414,7 +423,6 @@ html.april-fools body { animation: april-hue 12s ease-in-out infinite alternate;
 @keyframes fools-swing { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 .fools-404 h1 { font-size: 1.6rem; margin: 1rem 0 .5rem; }
 .fools-sub { color: var(--text-dim); margin-bottom: 2rem; }
-/* 404 遗言小字：极淡，hover 才稍亮 —— 顺藤摸瓜找 /config 的暗门提示 */
 .fools-epitaph {
   margin-top: 2.2rem; font-size: .72rem; letter-spacing: .08em;
   color: var(--text-dim); opacity: .32; transition: opacity .3s;
@@ -433,7 +441,6 @@ html.april-fools body { animation: april-hue 12s ease-in-out infinite alternate;
 
 /* ============ 响应式 ============ */
 @media (max-width: 900px) {
-  /* minmax(0,1fr) 而非 1fr：grid item 默认 min-width:auto 会被宽表格撑破视口 */
   .layout { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
   .toc {
     position: fixed; top: auto; bottom: 5rem; right: 1.2rem; z-index: 80;

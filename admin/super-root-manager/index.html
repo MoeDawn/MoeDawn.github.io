@@ -36,7 +36,6 @@
       font-size: .68rem; color: #58a6ff; border: 1px solid rgba(88,166,255,.4);
       border-radius: 1rem; padding: .05rem .55rem; background: rgba(88,166,255,.08);
     }
-    /* 高权限账号区：呼吸红光 + 边框 */
     .account-priv {
       display: inline-flex; align-items: center; gap: .55rem;
       padding: .35rem .9rem; border-radius: .8rem;
@@ -48,7 +47,6 @@
     .topbar { flex-wrap: wrap; }
     @media (max-width: 640px) {
       .topbar { padding: .7rem 1rem; row-gap: .55rem; }
-      /* 手机：品牌+退出第一行，账号红牌第二行独占右对齐 */
       .topbar .brand { flex: 1 1 auto; }
       .topbar .account-priv { order: 3; width: 100%; justify-content: center; }
       .account { font-size: .85rem; }
@@ -83,7 +81,6 @@
     }
     .main { flex: 1; min-width: 0; max-width: 1080px; margin: 0 auto; padding: 2.2rem 2rem 2rem; }
 
-    /* 手机：屏幕窄，直接隐藏菜单 */
     @media (max-width: 780px) {
       .sidenav { display: none; }
       .main { padding: 1.5rem 1.2rem 1.5rem; }
@@ -114,7 +111,6 @@
       border-radius: 12px; padding: 1.1rem 1.2rem; backdrop-filter: blur(4px);
       transition: border-color .2s, box-shadow .2s;
     }
-    /* 活跃卡（非归档）：默认蓝光晕，hover 加亮 */
     .card:not(.archived) {
       border-color: #388bfd55;
       box-shadow: 0 0 16px rgba(88,166,255,.18);
@@ -171,7 +167,6 @@
     .risk .ok { color: #3fb950; }
     .risk .dim { color: #6e7681; }
 
-    /* 卡片三：灰化归档态 */
     .card.archived {
       opacity: .42; border-style: dashed;
     }
@@ -197,7 +192,6 @@
     }
     .btn-exit:hover { color: #ff4d4f; border-color: #ff4d4f66; }
 
-    /* ⋯ 下拉假菜单 */
     .more-menu {
       position: absolute; right: 0; top: 2rem; z-index: 20;
       background: #161b22; border: 1px solid #30363d; border-radius: 8px;
@@ -214,7 +208,6 @@
     .card-head { position: relative; }
     .more { cursor: pointer; }
 
-    /* toast */
     #os-toast {
       position: fixed; top: 4.2rem; left: 50%;
       transform: translateX(-50%) translateY(-12px);
@@ -227,15 +220,45 @@
       transition: all .3s ease; z-index: 100; white-space: nowrap;
     }
     #os-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #os-toast.flash { animation: toast-flash .45s ease-out; }
+    @keyframes toast-flash {
+      0%   { border-color: #f85149; box-shadow: 0 0 18px rgba(248,81,73,.55); transform: translateX(-50%) translateY(0) scale(1.04); }
+      30%  { transform: translateX(calc(-50% - 3px)) translateY(0) scale(1.0); }
+      55%  { transform: translateX(calc(-50% + 3px)) translateY(0); }
+      100% { border-color: #f8514955; box-shadow: 0 8px 28px rgba(1,4,9,.8); transform: translateX(-50%) translateY(0); }
+    }
     @media (max-width: 640px) { #os-toast { white-space: normal; width: min(88vw, 30rem); } }
+
+    /* 入场动画：页面加载后菜单项与卡片依次浮现（JS 注入 animation-delay）。
+       归档卡终态 opacity 是 .42，单独定义动画终点，避免"先显示再重播"的冲突 */
+    .sidenav a, .nav-group, .card {
+      opacity: 0;
+      animation: enter-in .8s cubic-bezier(.22, .8, .3, 1) forwards;
+    }
+    .card.archived {
+      opacity: 0;
+      animation-name: enter-in-archived;
+    }
+    @keyframes enter-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes enter-in-archived {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: .42; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sidenav a, .nav-group, .card { animation: none; opacity: 1; }
+      .card.archived { animation: none; opacity: .42; }
+    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">集成管理系统</div>
     <div class="account account-priv">
-      已登陆账号: <b>MoeDawn</b>
-      <span class="level">LVL 8</span>
+      已登陆账号: <b id="login-account">MoeDawn</b>
+      <span class="level">LVL 3</span>
     </div>
     <button class="btn-exit" id="btn-exit" type="button">返回登陆界面</button>
   </header>
@@ -336,38 +359,45 @@
       'use strict';
       var toast = document.getElementById('os-toast');
       var toastTimer = null;
-      var failCount = 0;
       var RICK = 'https://www.bilibili.com/video/BV1GJ411x7h7/?spm_id_from=333.337.search-card.all.click';
+      var logClickCount = 0; /* 系统日志二连点 = 唯一的瑞克摇触发器 */
+
+      function popToast(msg, duration) {
+        toast.textContent = msg;
+        toast.classList.remove('flash');
+        void toast.offsetWidth; /* 强制 reflow，使 animation 可重放 */
+        toast.classList.add('flash', 'show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, duration || 2600);
+      }
 
       function serviceFail() {
-        toast.textContent = '⌜imouto.OS⌟ 服务无响应，请确认远端服务运行状态与网络连通性';
-        toast.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
-        failCount++;
-        if (failCount >= 3) {
-          setTimeout(function () { location.href = RICK; }, 500);
-        }
+        popToast(Math.random() < .25
+          ? '⌜imouto.OS⌟ 鉴权已完成 — 异常片段已转移至 /ward'
+          : '⌜imouto.OS⌟ 服务无响应，请确认远端服务运行状态与网络连通性');
       }
 
-      /* 编辑/删除人格：专用错误文案 */
       function editFail() {
-        toast.textContent = '⌜imouto.OS⌟ 连接失败 无法在此状态下编辑! 错误码:[-4]';
-        toast.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
-        failCount++;
-        if (failCount >= 3) {
-          setTimeout(function () { location.href = RICK; }, 500);
+        popToast('⌜imouto.OS⌟ 连接失败 无法在此状态下编辑! 错误码:[-4]');
+      }
+
+      function logFail() {
+        logClickCount++;
+        if (logClickCount === 1) {
+          popToast('⌜imouto.OS⌟ 检测到危险行为, 正在紧急登出');
+        } else if (logClickCount === 2) {
+          popToast('⌜imouto.OS⌟ 登出失败, 未知错误, 使用备选方案');
+          setTimeout(function () {
+            popToast('⌜imouto.OS⌟ 残留会话已归档至 /ward', 1400);
+          }, 1200);
+          setTimeout(function () { location.href = RICK; }, 3000);
         }
       }
 
-      /* 点击卡片本体：触发服务无响应 */
       document.querySelectorAll('.card:not(.archived)').forEach(function (card) {
         card.addEventListener('click', function () { serviceFail(); });
       });
 
-      /* ⋯ 更多菜单：只负责开合菜单，不触发告警 */
       document.querySelectorAll('[data-more]').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
@@ -389,29 +419,40 @@
         document.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.remove('show'); });
       });
 
-      /* 创建人格按钮 */
       document.getElementById('btn-create').addEventListener('click', serviceFail);
 
-      /* 左侧导航栏目：非当前页点击触发服务无响应 */
       document.querySelectorAll('.sidenav a').forEach(function (link) {
         if (link.classList.contains('active')) return; /* 当前页豁免 */
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          serviceFail();
+          if (link.textContent.indexOf('系统日志') >= 0) logFail(); else serviceFail();
         });
       });
 
-      /* 安全退出：回到 404 整蛊页 */
       document.getElementById('btn-exit').addEventListener('click', function () {
-        location.href = '/404.html';
+        location.href = '/404.html?ref=admin';
       });
 
-      /* 「最后同步」显示页面加载时的本机时间（每个访客都看到系统刚为自己同步过） */
       var d = new Date();
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
       document.getElementById('sync-time').textContent =
         d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' +
         pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+
+      var ACCOUNTS = [
+        'MoeDawn', '13long', 'Ankua', 'banmian', 'walnut', '云贵善举夫妇',
+        '12bmmx', 'jaxy13213', 'StalePar', 'CTfish_moyu', 'chongbuchongQB',
+        'Orzmirror', 'tudesourouding'
+      ];
+      document.getElementById('login-account').textContent =
+        ACCOUNTS[Math.floor(Math.random() * ACCOUNTS.length)];
+
+      document.querySelectorAll('.nav-group, .sidenav a').forEach(function (el, i) {
+        el.style.animationDelay = (i * 140) + 'ms';
+      });
+      document.querySelectorAll('.cards .card').forEach(function (el, i) {
+        el.style.animationDelay = (500 + i * 260) + 'ms';
+      });
     })();
   </script>
 </body>

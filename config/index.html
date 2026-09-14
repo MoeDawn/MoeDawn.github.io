@@ -42,24 +42,25 @@
       var msg = document.getElementById('msg');
       var spinner = document.getElementById('spinner');
 
-      /* 转圈动画期间 "..." 循环 */
       var dots = document.getElementById('dots');
       var dotTimer = setInterval(function () {
         var n = (dots.textContent.length + 1) % 4;
         dots.textContent = '...'.slice(0, n === 0 ? 3 : n);
       }, 350);
 
-      /* 步骤 2：通过验证 */
       setTimeout(function () {
         clearInterval(dotTimer);
-        msg.innerHTML = '<span class="ok">已通过身份验证</span>,权限等级: <span class="lvl">[8]</span> 正在重定向';
-      }, 2200);
+        msg.innerHTML = '<span style="color:#f85149;font-weight:700;">验证未通过</span>';
+      }, 3200);
 
-      /* 步骤 3：跳转伪装管理界面 */
+      setTimeout(function () {
+        msg.innerHTML = '<span class="ok">验证已通过</span>,权限等级: <span class="lvl">[3]</span> 正在重定向';
+      }, 3400);
+
       setTimeout(function () {
         spinner.style.display = 'none';
         location.replace('/admin/super-root-manager?token=highlevel-access');
-      }, 4200);
+      }, 5200);
     })();
   </script>
 </body>
