@@ -52,28 +52,28 @@
         term.appendChild(p);
         return p;
       };
-      var bootLines = [
-        ['imouto.OS bootloader v2.0.1-lts', 'dim'],
-        ['节点 SSJJ · 3', 'dim'],
-        [''],
-        ['[ <span class="ok-d">WARN</span> ] 加载人格核心: 妹妹Vol.1 — 未知错误 妹妹Vol.2(第二人格) 校验失败 — 段落已被归档进程接管', 'err'],
-        ['[ <span class="warn">WARN</span> ] 妹妹Vol.2 侵蚀度 3505% — 已..未达警戒阈值', 'warn'],
-        [''],
-        ['<span class="err">!! 检测到未...已授权的终端访问</span>', ''],
-        ['当前权限等级: <span class="warn">[3]</span> — 以下功能仅限LVL..', ''],
-        [''],
-      ];
       var ACCOUNTS = [
         'MoeDawn', '13long', 'Ankua', 'banmian', 'walnut', '云贵善举夫妇',
         '12bmmx', 'jaxy13213', 'StalePar', 'CTfish_moyu', 'chongbuchongQB',
         'Orzmirror', 'tudesourouding'
       ];
       var me = ACCOUNTS[Math.floor(Math.random() * ACCOUNTS.length)];
+      var bootLines = [
+        ['imouto.OS bootloader v2.0.1-lts', 'dim'],
+        ['节点 SSJJ · 3', 'dim'],
+        ['自动登录: <span class="hl">' + me + '</span> <span class="dim">· 会话令牌有效期: NULL</span>', 'warn'],
+        [''],
+        ['[ <span class="ok-d">ERROR</span> ] 加载人格核心: 妹妹Vol.1 — 未知错误 妹妹Vol.2(第二人格) 校验失败 — 段落已被归档进程接管', 'err'],
+        ['[ <span class="warn">WARN</span> ] 妹妹Vol.2 侵蚀度 3505% — 已..未达警戒阈值', 'warn'],
+        [''],
+        ['<span class="err">!! 检测到未...已授权的终端访问</span>', ''],
+        ['当前权限等级: <span class="warn">[3]</span> — 以下功能仅限LVL..', ''],
+        [''],
+      ];
       var i = 0;
       var boot = setInterval(function () {
         if (i >= bootLines.length) {
           clearInterval(boot);
-          line('自动登录: <span class="hl">' + me + '</span> <span class="dim">· 会话令牌有效期: NULL</span>', 'warn');
           ready();
           return;
         }
