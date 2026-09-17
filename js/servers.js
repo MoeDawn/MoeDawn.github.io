@@ -6,15 +6,15 @@
 
   const SERVERS_ACTIVE = [
     {
-      name: '1.21.11 生存服',
-      version: 'Java 1.21.11',
+      name: '26.3生存服',
+      version: 'Java 26.3',
       type: '生存',
       address: 'ssjj2.top',
       modpack: '无需整合包',
       noauth: true
     },
     {
-      name: '僵毁B42,公共服务器名称:PVZSSJJ3',
+      name: '僵毁,公共服务器名称:PVZSSJJ3',
       version: 'Build 42.20.2 端口号:17544',
       type: '模组PVE生存',
       address: 'mc.ssjj2.top',
@@ -29,7 +29,7 @@
     { name: '1.21 纯生存服', version: 'Java/基岩 1.21', type: '生存', address: 'ssjj2.top', closed: true, note: '双端互通', archived: '2025' },
     { name: '1.21 纯生存创造服', version: 'Java 1.21', type: '创造', address: 'cz.ssjj2.top', closed: true, note: '用于研究建筑的创造服', archived: '2025' },
     { name: '1.21.11 生存&创造服', version: 'Java 1.21.11', type: '创造', address: 'ssjj2.top', closed: true, note: '与生存服共用入口', archived: '2025' },
-    { name: '轻松愉快的女仆生存服', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '枪械,更多尸潮,血腥,感染;未能建造更大的炮艇草率结档', archived: '2025' },
+    { name: '轻松愉快的女仆生存服', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '枪械,更多尸潮,血腥,感染,草率结档', archived: '2025' },
     { name: '女仆生存创造服', version: 'Java 1.20.1', type: '创造', address: 'xxcz.ssjj2.top', closed: true, note: '默认创造模式;用于构思建筑或者机械动力机器', archived: '2025' },
     { name: '死亡突围', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'xx.ssjj2.top', closed: true, note: '死亡突围整合包', archived: '2025' },
     { name: '女仆生存 vanilla+', version: 'Java 1.20.1', type: '生存 · 整合包', address: 'md.ssjj2.top', closed: true, note: '休闲,女仆,种田,超多农夫乐事附属与世界结构,和女仆一起休闲种田养老', archived: '2025' },
