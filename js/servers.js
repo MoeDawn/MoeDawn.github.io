@@ -10,7 +10,7 @@
       version: 'Java 26.3',
       type: '生存',
       address: 'ssjj2.top',
-      modpack: '无需整合包',
+      modpack: '原版,无正版验证',
       noauth: true
     },
     {
@@ -18,7 +18,7 @@
       version: 'Build 42.20.2 端口号:17544',
       type: '模组PVE生存',
       address: 'mc.ssjj2.top',
-      modpack: '访问服务器自动下载',
+      modpack: '访问服务器自动下载模组',
       noauth: true,
       game: 'zomboid'
     }
